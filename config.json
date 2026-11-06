@@ -1,0 +1,7 @@
+﻿{
+    "ExifToolPath":  "exiftool\\exiftool.exe",
+    "StartFolder":  "C:\\",
+    "ThumbSize":  100,
+    "XmpOnly":  true,
+    "KeepBackups":  false
+}

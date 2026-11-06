@@ -1,0 +1,12 @@
+﻿cache/
+logs/
+bin/
+*.bak
+*.bak3
+*.xaml.bak
+exiftool/
+dist/
+settings.json
+*.zip
+*.bak*
+*.bak??
