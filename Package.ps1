@@ -3,8 +3,8 @@ Set-Location $PSScriptRoot
 if (-not $NoClear) { Clear-Host }
 $root = $PSScriptRoot
 $dist = Join-Path $root 'dist'
-$stage = Join-Path $dist 'MetadataEditor'
-$zip = Join-Path $dist 'MetadataEditor-portable.zip'
+$stage = Join-Path $dist 'Data'
+$zip = Join-Path $dist 'Data-portable.zip'
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 if (Test-Path $zip) { Remove-Item $zip -Force }
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
@@ -14,11 +14,11 @@ $cfg = Get-Content (Join-Path $stage 'config.json') -Raw | ConvertFrom-Json
 $cfg.ExifToolPath = 'exiftool\exiftool.exe'
 $cfg | ConvertTo-Json | Set-Content (Join-Path $stage 'config.json') -Encoding UTF8
 Set-Content (Join-Path $stage 'READ ME FIRST.txt') -Encoding UTF8 -Value @(
-    'MetadataEditor - portable',
+    'Data - portable',
     '',
     '1. If this zip came by download/email/OneDrive: right-click the zip > Properties > tick Unblock > OK, BEFORE extracting.',
-    '2. Extract the MetadataEditor folder anywhere you can write to (e.g. Documents or C:\Tools). Not Program Files.',
-    '3. Double-click MetadataEditor.exe.',
+    '2. Extract the Data folder anywhere you can write to (e.g. Documents or C:\Tools). Not Program Files.',
+    '3. Double-click Data.exe.',
     '4. Optional: right-click Create-Shortcut.ps1 > Run with PowerShell to put a shortcut on the Desktop.',
     '',
     'Needs Windows 10/11 (PowerShell 5.1 and .NET Framework 4.8 are built in).',

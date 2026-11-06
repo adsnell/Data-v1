@@ -1,18 +1,19 @@
-﻿METADATAEDITOR v3.2
+﻿DATA v1
 A free XMP metadata editor for Windows - free, with an optional donation.
 
 WHAT IT DOES
 Browse your folders, see files as thumbnails or in a details list, and read, edit
 and write XMP metadata (Title, Subject, Authors, Tags, Comments, Copyright, Rating)
 on one file or many at once. Bulk add/remove tags, copy and paste metadata between
-files, and search names and metadata (including subfolders). Word, Excel and
-PowerPoint files use their native document properties.
+files, rename files from their metadata, and search names and metadata in one folder,
+its subfolders, or a list of folders you choose - narrowing results step by step with
+filter chips. Word, Excel and PowerPoint files use their native document properties.
 
 GETTING STARTED
 1. Right-click the zip > Properties > tick "Unblock" if it is there > OK.
 2. Unzip the whole folder somewhere you can write to (e.g. Documents).
    Do not run it from inside the zip.
-3. Double-click MetadataEditor.exe.
+3. Double-click Data.exe.
 4. Optional: right-click Create-Shortcut.ps1 > Run with PowerShell for a desktop shortcut.
 Press F1 inside the app for full help.
 
@@ -23,7 +24,7 @@ your PC", and some antivirus tools may flag a PowerShell-based program. Click
 and it does not connect to the internet.
 
 IMPORTANT - BACK UP FIRST
-MetadataEditor writes XMP metadata INTO YOUR ORIGINAL FILES. It only changes the
+Data writes XMP metadata INTO YOUR ORIGINAL FILES. It only changes the
 metadata (not the picture or document content), but please keep a backup of anything
 important before you start. To keep an automatic copy of each file as it was before
 a change, open config.json and set KeepBackups to true (copies end in _original;
@@ -36,10 +37,9 @@ pane to move them (hold Ctrl to copy). Right-click for more (Properties, Copy/Pa
 metadata). F2 renames, Delete sends to the Recycle Bin.
 
 FREE, WITH AN OPTIONAL DONATION
-MetadataEditor is free to use and share. If it saves you time and you would like to
+Data is free to use and share. If it saves you time and you would like to
 say thanks, an optional £1 is very welcome: https://paypal.me/AndrewSnell791
-It is a hobby project, so there is no paid support - but feedback is welcome:
-https://github.com/adsnell/MetadataEditor (use Issues).
+It is a hobby project, so there is no paid support.
 
 CREDITS
 Powered by ExifTool by Phil Harvey - https://exiftool.org

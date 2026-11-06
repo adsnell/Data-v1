@@ -9,7 +9,7 @@ $bundledEt = Join-Path $root 'exiftool\exiftool.exe'
 if (Test-Path $bundledEt) { $cfg.ExifToolPath = $bundledEt }
 elseif (-not [IO.Path]::IsPathRooted([string]$cfg.ExifToolPath)) { $cfg.ExifToolPath = Join-Path $root ([string]$cfg.ExifToolPath) }
 if (-not (Test-Path $cfg.ExifToolPath)) {
-    [void][System.Windows.MessageBox]::Show("ExifTool was not found:`n$($cfg.ExifToolPath)`n`nPut exiftool.exe (with its exiftool_files folder) in the 'exiftool' folder next to this app.", 'MetadataEditor')
+    [void][System.Windows.MessageBox]::Show("ExifTool was not found:`n$($cfg.ExifToolPath)`n`nPut exiftool.exe (with its exiftool_files folder) in the 'exiftool' folder next to this app.", 'Data')
     exit 0
 }
 $logFile = Join-Path $root 'logs\app.log'
@@ -510,7 +510,7 @@ $script:sortProp = 'Name'
 $script:sortDir = 'Ascending'
 
 function Msg($text, $buttons = 'OK', $icon = 'None') {
-    return [System.Windows.MessageBox]::Show($win, $text, 'MetadataEditor', $buttons, $icon)
+    return [System.Windows.MessageBox]::Show($win, $text, 'Data', $buttons, $icon)
 }
 
 # ---------- Navigation ----------
@@ -2256,7 +2256,7 @@ $script:helpText = (@(
 
 function Show-Help {
     $w = New-Object System.Windows.Window
-    $w.Title = 'MetadataEditor - Help'
+    $w.Title = 'Data - Help'
     $w.Width = 640; $w.Height = 700
     $w.Owner = $win; $w.WindowStartupLocation = 'CenterOwner'
     $sv = New-Object System.Windows.Controls.ScrollViewer
@@ -2952,8 +2952,8 @@ function Update-WinTitle {
         if ($p) {
             $leaf = [IO.Path]::GetFileName($p.TrimEnd('\'))
             if (-not $leaf) { $leaf = $p }
-            $win.Title = "$leaf  -  MetadataEditor v3.0"
-        } else { $win.Title = 'MetadataEditor v3.0' }
+            $win.Title = "$leaf  -  Data v1"
+        } else { $win.Title = 'Data v1' }
     } catch { }
 }
 $txtPath.Add_TextChanged({ Update-WinTitle })
@@ -3063,7 +3063,7 @@ $btnClearCache.Add_Click({ Clear-ThumbCache })
 $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nPOLISH`nThe Save button turns orange (and changed fields get an orange border) while you have unsaved edits. The status bar shows errors in red, hints in amber and completed actions in green. Column widths and pane sizes are remembered. In Thumbnails view, Clear cache deletes cached thumbnails (they rebuild by themselves; the cache is also trimmed automatically above 200 MB).`n`nPress F1 any time")
 # ===== END SCRIPT14 =====
 # ===== SCRIPT15-MARKER =====
-$script:appVersion = '3.1'
+$script:appVersion = '1'
 $script:donateUrl  = 'https://paypal.me/AndrewSnell791'
 
 function Get-AncestorOf($d, [type]$t) {
@@ -3297,7 +3297,7 @@ $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nDRAG A
 
 function Show-Help {
     $w = New-Object System.Windows.Window
-    $w.Title = 'MetadataEditor - Help'
+    $w.Title = 'Data - Help'
     $w.Width = 640; $w.Height = 700
     $w.Owner = $win; $w.WindowStartupLocation = 'CenterOwner'
     $sv = New-Object System.Windows.Controls.ScrollViewer
@@ -3315,7 +3315,7 @@ function Show-Help {
     $ab.FontSize = 14
     $ab.Margin = [System.Windows.Thickness]::new(0, 20, 0, 0)
     $r = New-Object System.Windows.Documents.Run
-    $r.Text = "ABOUT`nMetadataEditor v$($script:appVersion) - free, with an optional donation.`nIt writes XMP metadata into your original files (the picture or document content is not changed), so back up anything important first. To keep a copy of each file as it was before a change, set KeepBackups to true in config.json (copies end in _original).`nPowered by ExifTool by Phil Harvey (exiftool.org), free software.`nIf this saved you time and you would like to say thanks, an optional $([char]0x00A3)1 is welcome: "
+    $r.Text = "ABOUT`nData v$($script:appVersion) - free, with an optional donation.`nIt writes XMP metadata into your original files (the picture or document content is not changed), so back up anything important first. To keep a copy of each file as it was before a change, set KeepBackups to true in config.json (copies end in _original).`nPowered by ExifTool by Phil Harvey (exiftool.org), free software.`nIf this saved you time and you would like to say thanks, an optional $([char]0x00A3)1 is welcome: "
     [void]$ab.Inlines.Add($r)
     $link = New-Object System.Windows.Documents.Hyperlink
     $link.NavigateUri = [Uri]$script:donateUrl
@@ -4462,7 +4462,7 @@ try {
 function Update-WinTitle {
     try {
         $p = [string]$txtPath.Text
-        $t = 'MetadataEditor v' + $script:appVersion
+        $t = 'Data v' + $script:appVersion
         if ($p) {
             $leaf = [IO.Path]::GetFileName($p.TrimEnd('\'))
             if (-not $leaf) { $leaf = $p }
@@ -4477,8 +4477,8 @@ try {
     $dc18 = $dv18.RenderOpen()
     $bg18 = New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(198, 40, 40))
     $dc18.DrawRoundedRectangle($bg18, $null, [System.Windows.Rect]::new(2, 2, 60, 60), 12, 12)
-    $gr18 = New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(105, 240, 174))
-    $ft18 = New-Object System.Windows.Media.FormattedText('v3', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, (New-Object System.Windows.Media.Typeface('Segoe UI')), 36, $gr18)
+    $gr18 = New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(77, 182, 172))
+    $ft18 = New-Object System.Windows.Media.FormattedText('D', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, (New-Object System.Windows.Media.Typeface('Segoe UI')), 36, $gr18)
     $ft18.SetFontWeight([System.Windows.FontWeights]::Bold)
     $dc18.DrawText($ft18, [System.Windows.Point]::new(32 - $ft18.Width / 2, 32 - $ft18.Height / 2))
     $dc18.Close()
