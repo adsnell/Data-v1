@@ -4,22 +4,22 @@
         FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13" Foreground="#202124">
   <Window.Resources>
     <!-- ================= THEME: edit colours here to restyle the whole app ================= -->
-    <SolidColorBrush x:Key="cSurface" Color="#EDEFF1"/>
-    <SolidColorBrush x:Key="cBorder" Color="#C4C7CC"/>
+    <SolidColorBrush x:Key="cSurface" Color="#DFE3E6"/>
+    <SolidColorBrush x:Key="cBorder" Color="#AEB3B9"/>
     <SolidColorBrush x:Key="cText" Color="#202124"/>
-    <SolidColorBrush x:Key="cTextDim" Color="#4A4F54"/>
-    <SolidColorBrush x:Key="cTextFaint" Color="#80868B"/>
-    <SolidColorBrush x:Key="cAccent" Color="#00796B"/>
-    <SolidColorBrush x:Key="cAccentDark" Color="#00695C"/>
-    <SolidColorBrush x:Key="cAccentTint" Color="#C8E6E2"/>
-    <SolidColorBrush x:Key="cAccentTint2" Color="#9DD3CD"/>
-    <SolidColorBrush x:Key="cNavy" Color="#17304F"/>
-    <SolidColorBrush x:Key="cHover" Color="#E3E6E9"/>
+    <SolidColorBrush x:Key="cTextDim" Color="#3C4146"/>
+    <SolidColorBrush x:Key="cTextFaint" Color="#6E7479"/>
+    <SolidColorBrush x:Key="cAccent" Color="#00695C"/>
+    <SolidColorBrush x:Key="cAccentDark" Color="#00574D"/>
+    <SolidColorBrush x:Key="cAccentTint" Color="#B5DBD6"/>
+    <SolidColorBrush x:Key="cAccentTint2" Color="#86C6BE"/>
+    <SolidColorBrush x:Key="cNavy" Color="#10253E"/>
+    <SolidColorBrush x:Key="cHover" Color="#D5D9DD"/>
 
     <!-- selection colours for the folder tree, lists and menus -->
-    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#C8E6E2"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#B5DBD6"/>
     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#202124"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#DCEAE8"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#CBDFDC"/>
     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#202124"/>
 
     <!-- ================= STYLES ================= -->
@@ -42,9 +42,9 @@
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter TargetName="focusLine" Property="Visibility" Value="Visible"/></Trigger>
-              <Trigger Property="IsReadOnly" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cSurface}"/></Trigger>
+              
               <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="bd" Property="Background" Value="{DynamicResource cSurface}"/>
+                
                 <Setter Property="Foreground" Value="{DynamicResource cTextFaint}"/>
               </Trigger>
             </ControlTemplate.Triggers>
@@ -304,10 +304,10 @@
               <ContentPresenter/>
             </Border>
             <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#E3E6E9"/></Trigger>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#D5D9DD"/></Trigger>
               <Trigger Property="IsSelected" Value="True">
-                <Setter TargetName="bd" Property="Background" Value="#C8E6E2"/>
-                <Setter TargetName="bd" Property="BorderBrush" Value="#00796B"/>
+                <Setter TargetName="bd" Property="Background" Value="#B5DBD6"/>
+                <Setter TargetName="bd" Property="BorderBrush" Value="#00695C"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -350,8 +350,8 @@
 
     <!-- Path bar -->
     <DockPanel Grid.Row="1" Margin="8,2,8,6">
-      <TextBlock Text="Path:" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource cTextDim}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-      <TextBox x:Name="txtPath" IsReadOnly="True" Height="26" VerticalContentAlignment="Center" FontSize="12"/>
+      <TextBlock Text="Path:" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource cTextDim}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+      <TextBox x:Name="txtPath" IsReadOnly="True" Height="30" VerticalContentAlignment="Center" FontSize="14"/>
     </DockPanel>
 
     <!-- Main area -->

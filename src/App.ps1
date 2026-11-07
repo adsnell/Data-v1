@@ -1937,10 +1937,10 @@ function Set-TileResources {
           <ContentPresenter/>
         </Border>
         <ControlTemplate.Triggers>
-          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#E3E6E9"/><Setter TargetName="bd" Property="BorderBrush" Value="#C4C7CC"/></Trigger>
+          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#D5D9DD"/><Setter TargetName="bd" Property="BorderBrush" Value="#AEB3B9"/></Trigger>
           <Trigger Property="IsSelected" Value="True">
-            <Setter TargetName="bd" Property="Background" Value="#C8E6E2"/>
-            <Setter TargetName="bd" Property="BorderBrush" Value="#00796B"/>
+            <Setter TargetName="bd" Property="Background" Value="#B5DBD6"/>
+            <Setter TargetName="bd" Property="BorderBrush" Value="#00695C"/>
           </Trigger>
         </ControlTemplate.Triggers>
       </ControlTemplate>
@@ -2917,8 +2917,8 @@ $dpdStatus.AddValueChanged($txtStatus, [EventHandler]{
 # ---------- Unsaved-edit cue: orange Save button + orange border on changed fields ----------
 $bc = New-Object System.Windows.Media.BrushConverter
 $script:cueBorder = $bc.ConvertFromString('#E8710A')
-$script:cueClean  = $bc.ConvertFromString('#C4C7CC')
-$script:saveBlue  = $bc.ConvertFromString('#00796B')
+$script:cueClean  = $bc.ConvertFromString('#AEB3B9')
+$script:saveBlue  = $bc.ConvertFromString('#00695C')
 $script:saveOrange = $bc.ConvertFromString('#E8710A')
 function Update-DirtyCue {
     try {
@@ -3262,7 +3262,7 @@ $tree.Add_DragOver({
         $e.Effects = [System.Windows.DragDropEffects](Get-DropEffect $e ([string]$tvi.Tag) $paths)
         if ($script:dropHot -ne $tvi) {
             Clear-DropHot
-            $tvi.Background = ((New-Object System.Windows.Media.BrushConverter).ConvertFromString('#9DD3CD'))
+            $tvi.Background = ((New-Object System.Windows.Media.BrushConverter).ConvertFromString('#86C6BE'))
             $script:dropHot = $tvi
         }
     } catch { }
@@ -4144,7 +4144,7 @@ try {
     $btnRecent.FontSize = 15
     $btnRecent.FontFamily = New-Object System.Windows.Media.FontFamily('Segoe UI Symbol')
     $btnRecent.Foreground = [System.Windows.Media.Brushes]::Black
-    $btnRecent.Background = (New-Object System.Windows.Media.BrushConverter).ConvertFromString('#E3E6E9')
+    $btnRecent.Background = (New-Object System.Windows.Media.BrushConverter).ConvertFromString('#D5D9DD')
 } catch { Write-Log ('btnRecent: ' + $_.Exception.Message) }
 
 # ---------- Comments + Taken columns ----------
@@ -5379,8 +5379,8 @@ function Update-ChipUi {
     for ($i = 0; $i -lt $n; $i++) {
         $bd = New-Object System.Windows.Controls.Border
         $bd.CornerRadius = [System.Windows.CornerRadius]::new(10)
-        $bd.Background = $script:brushConv23.ConvertFromString('#C8E6E2')
-        $bd.BorderBrush = $script:brushConv23.ConvertFromString('#5FB5AC')
+        $bd.Background = $script:brushConv23.ConvertFromString('#B5DBD6')
+        $bd.BorderBrush = $script:brushConv23.ConvertFromString('#4A9F96')
         $bd.BorderThickness = [System.Windows.Thickness]::new(1)
         $bd.Padding = [System.Windows.Thickness]::new(8, 1, 4, 1)
         $bd.Margin = [System.Windows.Thickness]::new(0, 0, 4, 0)
@@ -5413,7 +5413,7 @@ function Update-ChipUi {
     $ca = New-Object System.Windows.Controls.TextBlock
     $ca.Text = 'Clear all'
     $ca.FontSize = 11
-    $ca.Foreground = $script:brushConv23.ConvertFromString('#00796B')
+    $ca.Foreground = $script:brushConv23.ConvertFromString('#00695C')
     $ca.TextDecorations = [System.Windows.TextDecorations]::Underline
     $ca.VerticalAlignment = 'Center'
     $ca.Margin = [System.Windows.Thickness]::new(4, 0, 0, 0)
@@ -5616,10 +5616,10 @@ function Set-TileResources {
           <ContentPresenter/>
         </Border>
         <ControlTemplate.Triggers>
-          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#E3E6E9"/><Setter TargetName="bd" Property="BorderBrush" Value="#C4C7CC"/></Trigger>
+          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#D5D9DD"/><Setter TargetName="bd" Property="BorderBrush" Value="#AEB3B9"/></Trigger>
           <Trigger Property="IsSelected" Value="True">
-            <Setter TargetName="bd" Property="Background" Value="#C8E6E2"/>
-            <Setter TargetName="bd" Property="BorderBrush" Value="#00796B"/>
+            <Setter TargetName="bd" Property="Background" Value="#B5DBD6"/>
+            <Setter TargetName="bd" Property="BorderBrush" Value="#00695C"/>
           </Trigger>
         </ControlTemplate.Triggers>
       </ControlTemplate>
