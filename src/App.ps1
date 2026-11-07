@@ -383,7 +383,7 @@ function Show-Metadata {
         $f.Ctl.Text = $text
         $script:loaded[$f.Key] = $text
         if ($uniq.Count -gt 1) {
-            $f.Ctl.Background = [Windows.Media.Brushes]::LightYellow
+            $f.Ctl.Background = ((New-Object System.Windows.Media.BrushConverter).ConvertFromString('#FEF7E0'))
             $f.Ctl.ToolTip = 'Files have different values. Leave unchanged to keep each as is, or type to set all.'
         }
     }
@@ -1933,14 +1933,14 @@ function Set-TileResources {
   <Setter Property="Template">
     <Setter.Value>
       <ControlTemplate TargetType="ListViewItem">
-        <Border x:Name="bd" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
+        <Border x:Name="bd" CornerRadius="8" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
           <ContentPresenter/>
         </Border>
         <ControlTemplate.Triggers>
-          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#E6F0FB"/><Setter TargetName="bd" Property="BorderBrush" Value="#B8D4F0"/></Trigger>
+          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#F1F3F4"/><Setter TargetName="bd" Property="BorderBrush" Value="#DADCE0"/></Trigger>
           <Trigger Property="IsSelected" Value="True">
-            <Setter TargetName="bd" Property="Background" Value="#C9E2FB"/>
-            <Setter TargetName="bd" Property="BorderBrush" Value="#1F6FD0"/>
+            <Setter TargetName="bd" Property="Background" Value="#E0F2F1"/>
+            <Setter TargetName="bd" Property="BorderBrush" Value="#00897B"/>
           </Trigger>
         </ControlTemplate.Triggers>
       </ControlTemplate>
@@ -2497,7 +2497,7 @@ function Show-Metadata {
         } else {
             $f.Ctl.Text = ''
             $script:loaded[$f.Key] = ''
-            $f.Ctl.Background = [Windows.Media.Brushes]::LightYellow
+            $f.Ctl.Background = ((New-Object System.Windows.Media.BrushConverter).ConvertFromString('#FEF7E0'))
             $f.Ctl.ToolTip = 'Selected files have different values. Leave empty to keep each, or type to set all.'
         }
     }
@@ -2899,8 +2899,8 @@ $list.Add_SelectionChanged({
 $script:stBrush = @{
     err  = (New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(198, 40, 40)))
     warn = (New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(178, 106, 0)))
-    ok   = (New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(46, 125, 50)))
-    norm = [System.Windows.Media.Brushes]::Black
+    ok   = (New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(24, 128, 56)))
+    norm = (New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromRgb(32, 33, 36)))
 }
 $dpdStatus = [System.ComponentModel.DependencyPropertyDescriptor]::FromProperty([System.Windows.Controls.TextBlock]::TextProperty, [System.Windows.Controls.TextBlock])
 $dpdStatus.AddValueChanged($txtStatus, [EventHandler]{
@@ -2916,10 +2916,10 @@ $dpdStatus.AddValueChanged($txtStatus, [EventHandler]{
 
 # ---------- Unsaved-edit cue: orange Save button + orange border on changed fields ----------
 $bc = New-Object System.Windows.Media.BrushConverter
-$script:cueBorder = $bc.ConvertFromString('#E65100')
-$script:cueClean  = $bc.ConvertFromString('#999999')
-$script:saveBlue  = $bc.ConvertFromString('#1565C0')
-$script:saveOrange = $bc.ConvertFromString('#E65100')
+$script:cueBorder = $bc.ConvertFromString('#E8710A')
+$script:cueClean  = $bc.ConvertFromString('#DADCE0')
+$script:saveBlue  = $bc.ConvertFromString('#00897B')
+$script:saveOrange = $bc.ConvertFromString('#E8710A')
 function Update-DirtyCue {
     try {
         $dirty = $false
@@ -3262,7 +3262,7 @@ $tree.Add_DragOver({
         $e.Effects = [System.Windows.DragDropEffects](Get-DropEffect $e ([string]$tvi.Tag) $paths)
         if ($script:dropHot -ne $tvi) {
             Clear-DropHot
-            $tvi.Background = [System.Windows.Media.Brushes]::LightSkyBlue
+            $tvi.Background = ((New-Object System.Windows.Media.BrushConverter).ConvertFromString('#B2DFDB'))
             $script:dropHot = $tvi
         }
     } catch { }
@@ -4144,7 +4144,7 @@ try {
     $btnRecent.FontSize = 15
     $btnRecent.FontFamily = New-Object System.Windows.Media.FontFamily('Segoe UI Symbol')
     $btnRecent.Foreground = [System.Windows.Media.Brushes]::Black
-    $btnRecent.Background = (New-Object System.Windows.Media.BrushConverter).ConvertFromString('#E3EAF3')
+    $btnRecent.Background = (New-Object System.Windows.Media.BrushConverter).ConvertFromString('#F1F3F4')
 } catch { Write-Log ('btnRecent: ' + $_.Exception.Message) }
 
 # ---------- Comments + Taken columns ----------
@@ -5379,8 +5379,8 @@ function Update-ChipUi {
     for ($i = 0; $i -lt $n; $i++) {
         $bd = New-Object System.Windows.Controls.Border
         $bd.CornerRadius = [System.Windows.CornerRadius]::new(10)
-        $bd.Background = $script:brushConv23.ConvertFromString('#E3F2FD')
-        $bd.BorderBrush = $script:brushConv23.ConvertFromString('#90CAF9')
+        $bd.Background = $script:brushConv23.ConvertFromString('#E0F2F1')
+        $bd.BorderBrush = $script:brushConv23.ConvertFromString('#80CBC4')
         $bd.BorderThickness = [System.Windows.Thickness]::new(1)
         $bd.Padding = [System.Windows.Thickness]::new(8, 1, 4, 1)
         $bd.Margin = [System.Windows.Thickness]::new(0, 0, 4, 0)
@@ -5413,7 +5413,7 @@ function Update-ChipUi {
     $ca = New-Object System.Windows.Controls.TextBlock
     $ca.Text = 'Clear all'
     $ca.FontSize = 11
-    $ca.Foreground = $script:brushConv23.ConvertFromString('#1565C0')
+    $ca.Foreground = $script:brushConv23.ConvertFromString('#00897B')
     $ca.TextDecorations = [System.Windows.TextDecorations]::Underline
     $ca.VerticalAlignment = 'Center'
     $ca.Margin = [System.Windows.Thickness]::new(4, 0, 0, 0)
@@ -5612,14 +5612,14 @@ function Set-TileResources {
   <Setter Property="Template">
     <Setter.Value>
       <ControlTemplate TargetType="ListViewItem">
-        <Border x:Name="bd" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
+        <Border x:Name="bd" CornerRadius="8" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
           <ContentPresenter/>
         </Border>
         <ControlTemplate.Triggers>
-          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#E6F0FB"/><Setter TargetName="bd" Property="BorderBrush" Value="#B8D4F0"/></Trigger>
+          <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#F1F3F4"/><Setter TargetName="bd" Property="BorderBrush" Value="#DADCE0"/></Trigger>
           <Trigger Property="IsSelected" Value="True">
-            <Setter TargetName="bd" Property="Background" Value="#C9E2FB"/>
-            <Setter TargetName="bd" Property="BorderBrush" Value="#1F6FD0"/>
+            <Setter TargetName="bd" Property="Background" Value="#E0F2F1"/>
+            <Setter TargetName="bd" Property="BorderBrush" Value="#00897B"/>
           </Trigger>
         </ControlTemplate.Triggers>
       </ControlTemplate>
@@ -5673,6 +5673,10 @@ if ($rbThumbs.IsChecked) { Apply-View }
 # ---------- Help ----------
 $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nSEARCH WITHIN RESULTS (FILTER CHIPS)`nType a search and press Enter. It becomes a chip beside the Path box and the list shows the matches. Search again and press Enter to narrow further; every chip must match. Click a chip's text to edit it, its x to remove it, or Clear all. Esc clears the box, then the chips. The blank-field filters from the arrow menu are chips too. Chips clear when you open another folder.`n`nCAPTIONS IN THUMBNAILS VIEW`nUse the Captions button (right of the Path box, Thumbnails view only) to show Subject, Title, Tags, Comments or Authors under each thumbnail. A file with nothing in that field shows a pale (no subject) style note, so untagged files stand out. Your choice is remembered.`n`nPress F1 any time")
 # ===== END SCRIPT23 =====
+# ===== SCRIPT24-MARKER =====
+# ---------- Theme pass 1: colours and styles live in src\MainWindow.xaml (Window.Resources) ----------
+try { Update-DirtyCue } catch { }
+# ===== END SCRIPT24 =====
 $win.ShowDialog() | Out-Null
 
 
