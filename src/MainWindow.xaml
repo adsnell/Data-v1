@@ -4,22 +4,22 @@
         FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13" Foreground="#202124">
   <Window.Resources>
     <!-- ================= THEME: edit colours here to restyle the whole app ================= -->
-    <SolidColorBrush x:Key="cSurface" Color="#F8F9FA"/>
-    <SolidColorBrush x:Key="cBorder" Color="#DADCE0"/>
+    <SolidColorBrush x:Key="cSurface" Color="#EDEFF1"/>
+    <SolidColorBrush x:Key="cBorder" Color="#C4C7CC"/>
     <SolidColorBrush x:Key="cText" Color="#202124"/>
-    <SolidColorBrush x:Key="cTextDim" Color="#5F6368"/>
-    <SolidColorBrush x:Key="cTextFaint" Color="#9AA0A6"/>
-    <SolidColorBrush x:Key="cAccent" Color="#00897B"/>
-    <SolidColorBrush x:Key="cAccentDark" Color="#00796B"/>
-    <SolidColorBrush x:Key="cAccentTint" Color="#E0F2F1"/>
-    <SolidColorBrush x:Key="cAccentTint2" Color="#B2DFDB"/>
-    <SolidColorBrush x:Key="cNavy" Color="#1F3A5F"/>
-    <SolidColorBrush x:Key="cHover" Color="#F1F3F4"/>
+    <SolidColorBrush x:Key="cTextDim" Color="#4A4F54"/>
+    <SolidColorBrush x:Key="cTextFaint" Color="#80868B"/>
+    <SolidColorBrush x:Key="cAccent" Color="#00796B"/>
+    <SolidColorBrush x:Key="cAccentDark" Color="#00695C"/>
+    <SolidColorBrush x:Key="cAccentTint" Color="#C8E6E2"/>
+    <SolidColorBrush x:Key="cAccentTint2" Color="#9DD3CD"/>
+    <SolidColorBrush x:Key="cNavy" Color="#17304F"/>
+    <SolidColorBrush x:Key="cHover" Color="#E3E6E9"/>
 
     <!-- selection colours for the folder tree, lists and menus -->
-    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E0F2F1"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#C8E6E2"/>
     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#202124"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#EAF2F1"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#DCEAE8"/>
     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#202124"/>
 
     <!-- ================= STYLES ================= -->
@@ -304,10 +304,10 @@
               <ContentPresenter/>
             </Border>
             <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#F1F3F4"/></Trigger>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#E3E6E9"/></Trigger>
               <Trigger Property="IsSelected" Value="True">
-                <Setter TargetName="bd" Property="Background" Value="#E0F2F1"/>
-                <Setter TargetName="bd" Property="BorderBrush" Value="#00897B"/>
+                <Setter TargetName="bd" Property="Background" Value="#C8E6E2"/>
+                <Setter TargetName="bd" Property="BorderBrush" Value="#00796B"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
