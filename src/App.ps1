@@ -2018,7 +2018,7 @@ $sizeSlider = New-Object System.Windows.Controls.Slider
 $sizeSlider.Minimum = 70
 $sizeSlider.Maximum = 300
 $sizeSlider.Value = $script:tileSize
-$sizeSlider.Width = 120
+$sizeSlider.Width = 150
 $sizeSlider.VerticalAlignment = 'Center'
 $sizeSlider.Margin = [System.Windows.Thickness]::new(12, 0, 0, 0)
 $sizeSlider.IsMoveToPointEnabled = $true
@@ -5677,6 +5677,33 @@ $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nSEARCH
 # ---------- Theme pass 1: colours and styles live in src\MainWindow.xaml (Window.Resources) ----------
 try { Update-DirtyCue } catch { }
 # ===== END SCRIPT24 =====
+# ===== SCRIPT25-MARKER =====
+# ---------- Dark title bar: very dark grey with white text ----------
+try {
+    if (-not ('DwmNative' -as [type])) {
+        Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+public static class DwmNative {
+    [DllImport("dwmapi.dll")]
+    public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int value, int size);
+}
+"@
+    }
+    $win.Add_SourceInitialized({
+        try {
+            $h = (New-Object System.Windows.Interop.WindowInteropHelper($win)).Handle
+            $on = 1
+            [void][DwmNative]::DwmSetWindowAttribute($h, 20, [ref]$on, 4)
+            [void][DwmNative]::DwmSetWindowAttribute($h, 19, [ref]$on, 4)
+            $cap = 0x00242120
+            $txt = 0x00FFFFFF
+            [void][DwmNative]::DwmSetWindowAttribute($h, 35, [ref]$cap, 4)
+            [void][DwmNative]::DwmSetWindowAttribute($h, 36, [ref]$txt, 4)
+        } catch { }
+    })
+} catch { Write-Log ('dark title bar: ' + $_.Exception.Message) }
+# ===== END SCRIPT25 =====
 $win.ShowDialog() | Out-Null
 
 

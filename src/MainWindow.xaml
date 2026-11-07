@@ -15,6 +15,9 @@
     <SolidColorBrush x:Key="cAccentTint2" Color="#86C6BE"/>
     <SolidColorBrush x:Key="cNavy" Color="#10253E"/>
     <SolidColorBrush x:Key="cHover" Color="#D5D9DD"/>
+    <SolidColorBrush x:Key="cToolbar" Color="#D0D5D9"/>
+    <SolidColorBrush x:Key="cPanel" Color="#F8F9FA"/>
+    <SolidColorBrush x:Key="cBarHover" Color="#E3E7EA"/>
 
     <!-- selection colours for the folder tree, lists and menus -->
     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#B5DBD6"/>
@@ -118,7 +121,7 @@
               <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
             <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cHover}"/></Trigger>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cBarHover}"/></Trigger>
               <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="bd" Property="Background" Value="{DynamicResource cAccentTint}"/>
                 <Setter Property="Foreground" Value="{DynamicResource cAccentDark}"/>
@@ -256,12 +259,68 @@
               </Viewbox>
             </Border>
             <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cHover}"/></Trigger>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cBarHover}"/></Trigger>
               <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="bd" Property="Background" Value="{DynamicResource cAccentTint}"/>
                 <Setter Property="Foreground" Value="{DynamicResource cAccentDark}"/>
               </Trigger>
             </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+        <!-- ================= SLIDER (thumbnail size) ================= -->
+    <Style x:Key="SliderFill" TargetType="RepeatButton">
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="IsTabStop" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="RepeatButton">
+            <Border Height="6" CornerRadius="3" Background="{DynamicResource cAccent}" VerticalAlignment="Center"/>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="SliderGap" TargetType="RepeatButton">
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="IsTabStop" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="RepeatButton">
+            <Border Height="6" Background="Transparent" VerticalAlignment="Center"/>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="SliderThumb" TargetType="Thumb">
+      <Setter Property="Width" Value="18"/>
+      <Setter Property="Height" Value="18"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Thumb">
+            <Ellipse x:Name="el" Fill="{DynamicResource cAccent}" Stroke="White" StrokeThickness="2"/>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="el" Property="Fill" Value="{DynamicResource cAccentDark}"/></Trigger>
+              <Trigger Property="IsDragging" Value="True"><Setter TargetName="el" Property="Fill" Value="{DynamicResource cAccentDark}"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="Slider">
+      <Setter Property="MinHeight" Value="24"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Slider">
+            <Grid Background="Transparent" MinHeight="24">
+              <Border Height="6" CornerRadius="3" Background="{DynamicResource cTextFaint}" VerticalAlignment="Center"/>
+              <Track x:Name="PART_Track" VerticalAlignment="Center">
+                <Track.DecreaseRepeatButton><RepeatButton Style="{StaticResource SliderFill}" Command="Slider.DecreaseLarge"/></Track.DecreaseRepeatButton>
+                <Track.IncreaseRepeatButton><RepeatButton Style="{StaticResource SliderGap}" Command="Slider.IncreaseLarge"/></Track.IncreaseRepeatButton>
+                <Track.Thumb><Thumb Style="{StaticResource SliderThumb}"/></Track.Thumb>
+              </Track>
+            </Grid>
           </ControlTemplate>
         </Setter.Value>
       </Setter>
@@ -324,7 +383,7 @@
     </Grid.RowDefinitions>
 
     <!-- Toolbar and path bar background -->
-    <Border Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource cSurface}" BorderBrush="{DynamicResource cBorder}" BorderThickness="0,0,0,1"/>
+    <Border Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource cToolbar}" BorderBrush="{DynamicResource cBorder}" BorderThickness="0,0,0,1"/>
 
     <!-- Toolbar -->
     <DockPanel Grid.Row="0" Margin="8,6,8,4" LastChildFill="False">
@@ -376,7 +435,7 @@
       <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="Transparent"/>
 
       <!-- Right: metadata -->
-      <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Auto" Background="{DynamicResource cSurface}">
+      <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Auto" Background="{DynamicResource cPanel}">
         <StackPanel Margin="12,0,12,12">
           <TextBlock Text="Details" Style="{StaticResource Head}" Margin="0,6,0,0"/>
           <TextBlock Text="File name:" Style="{StaticResource Lbl}"/>
