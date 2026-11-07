@@ -4439,13 +4439,13 @@ try {
     $s18Bar = $s18Move.Parent
     $s18Idx = $s18Bar.Children.IndexOf($s18Move)
     $btnUndo = New-Object System.Windows.Controls.Button
-    $btnUndo.Content = 'Undo save'
-    try { $btnUndo.Style = $win.FindResource('TB') } catch { }
+    $btnUndo.Tag = $win.FindResource('icUndo')
+    try { $btnUndo.Style = $win.FindResource('IconBtn') } catch { }
     $btnUndo.ToolTip = "Restore the selected files from their _original backups.`nNeeds KeepBackups = true in config.json."
     $btnUndo.Add_Click({ Do-UndoSave })
     $btnBR = New-Object System.Windows.Controls.Button
-    $btnBR.Content = 'Batch rename'
-    try { $btnBR.Style = $win.FindResource('TB') } catch { }
+    $btnBR.Tag = $win.FindResource('icPencil')
+    try { $btnBR.Style = $win.FindResource('IconBtn') } catch { }
     $btnBR.ToolTip = 'Rename the selected files from their metadata, e.g. {date}_{title}'
     $btnBR.Add_Click({ Do-BatchRename })
     $s18Bar.Children.Insert($s18Idx + 1, $btnUndo)

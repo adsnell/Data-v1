@@ -195,6 +195,78 @@
       </Setter>
     </Style>
 
+        <!-- ================= ICONS (24 x 24 outline shapes) ================= -->
+    <Geometry x:Key="icChevronLeft">M15,5 L8,12 L15,19</Geometry>
+    <Geometry x:Key="icChevronRight">M9,5 L16,12 L9,19</Geometry>
+    <Geometry x:Key="icFolderPlus">M3,7 A2,2 0 0 1 5,5 H9 L11,7 H19 A2,2 0 0 1 21,9 V17 A2,2 0 0 1 19,19 H5 A2,2 0 0 1 3,17 Z M12,10.5 V15.5 M9.5,13 H14.5</Geometry>
+    <Geometry x:Key="icFolderDown">M3,7 A2,2 0 0 1 5,5 H9 L11,7 H19 A2,2 0 0 1 21,9 V17 A2,2 0 0 1 19,19 H5 A2,2 0 0 1 3,17 Z M12,10 V16 M9.5,13.5 L12,16 L14.5,13.5</Geometry>
+    <Geometry x:Key="icFolderShare">M3,7 A2,2 0 0 1 5,5 H9 L11,7 H19 A2,2 0 0 1 21,9 V17 A2,2 0 0 1 19,19 H5 A2,2 0 0 1 3,17 Z M8.5,13 H15.5 M13,10.5 L15.5,13 L13,15.5</Geometry>
+    <Geometry x:Key="icTrash">M4,7 H20 M9,7 V5 A1,1 0 0 1 10,4 H14 A1,1 0 0 1 15,5 V7 M6,7 L7,19 A2,2 0 0 0 9,21 H15 A2,2 0 0 0 17,19 L18,7 M10,11 V17 M14,11 V17</Geometry>
+    <Geometry x:Key="icScissors">M9.1,18 A3.1,3.1 0 1 1 2.9,18 A3.1,3.1 0 1 1 9.1,18 Z M21.1,18 A3.1,3.1 0 1 1 14.9,18 A3.1,3.1 0 1 1 21.1,18 Z M8.2,15.8 L20,4 M15.8,15.8 L4,4</Geometry>
+    <Geometry x:Key="icCopy">M11,9 H18 A2,2 0 0 1 20,11 V18 A2,2 0 0 1 18,20 H11 A2,2 0 0 1 9,18 V11 A2,2 0 0 1 11,9 Z M15,9 V6 A2,2 0 0 0 13,4 H6 A2,2 0 0 0 4,6 V13 A2,2 0 0 0 6,15 H9</Geometry>
+    <Geometry x:Key="icClipboard">M9,5 H7 A2,2 0 0 0 5,7 V19 A2,2 0 0 0 7,21 H17 A2,2 0 0 0 19,19 V7 A2,2 0 0 0 17,5 H15 M9,5 A1,1 0 0 1 10,4 H14 A1,1 0 0 1 15,5 V6 A1,1 0 0 1 14,7 H10 A1,1 0 0 1 9,6 Z</Geometry>
+    <Geometry x:Key="icUndo">M9,14 L4,9 L9,4 M4,9 H14.5 A5.5,5.5 0 0 1 14.5,20 H11</Geometry>
+    <Geometry x:Key="icPencil">M5,20 H8 L18.5,9.5 A2.1,2.1 0 0 0 15.5,6.5 L5,17 Z M13.5,8.5 L16.5,11.5</Geometry>
+    <Geometry x:Key="icList">M9,6 H20 M9,12 H20 M9,18 H20 M4.5,6 H4.6 M4.5,12 H4.6 M4.5,18 H4.6</Geometry>
+    <Geometry x:Key="icGrid">M5,4 H9 A1,1 0 0 1 10,5 V9 A1,1 0 0 1 9,10 H5 A1,1 0 0 1 4,9 V5 A1,1 0 0 1 5,4 Z M15,4 H19 A1,1 0 0 1 20,5 V9 A1,1 0 0 1 19,10 H15 A1,1 0 0 1 14,9 V5 A1,1 0 0 1 15,4 Z M5,14 H9 A1,1 0 0 1 10,15 V19 A1,1 0 0 1 9,20 H5 A1,1 0 0 1 4,19 V15 A1,1 0 0 1 5,14 Z M15,14 H19 A1,1 0 0 1 20,15 V19 A1,1 0 0 1 19,20 H15 A1,1 0 0 1 14,19 V15 A1,1 0 0 1 15,14 Z</Geometry>
+    <Geometry x:Key="icSearch">M17,11 A6,6 0 1 1 5,11 A6,6 0 1 1 17,11 Z M15.5,15.5 L20,20</Geometry>
+    <Geometry x:Key="icHelp">M21,12 A9,9 0 1 1 3,12 A9,9 0 1 1 21,12 Z M9.5,9.5 A2.5,2.5 0 1 1 12.8,11.8 C12.2,12.2 12,12.6 12,13.5 M12,17 H12.1</Geometry>
+
+    <Style x:Key="IconBtn" TargetType="Button" BasedOn="{StaticResource TB}">
+      <Setter Property="Width" Value="34"/>
+      <Setter Property="Height" Value="34"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Foreground" Value="{DynamicResource cTextDim}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6">
+              <Viewbox Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Canvas Width="24" Height="24">
+                  <Path Data="{TemplateBinding Tag}" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.9"
+                        StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Canvas>
+              </Viewbox>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource cAccentTint}"/>
+                <Setter Property="Foreground" Value="{DynamicResource cAccentDark}"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cAccentTint2}"/></Trigger>
+              <Trigger Property="IsEnabled" Value="False"><Setter Property="Foreground" Value="{DynamicResource cTextFaint}"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="SegIcon" TargetType="RadioButton">
+      <Setter Property="Foreground" Value="{DynamicResource cTextDim}"/>
+      <Setter Property="Width" Value="34"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="RadioButton">
+            <Border x:Name="bd" CornerRadius="6" Background="Transparent">
+              <Viewbox Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Canvas Width="24" Height="24">
+                  <Path Data="{TemplateBinding Tag}" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.9"
+                        StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Canvas>
+              </Viewbox>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cHover}"/></Trigger>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource cAccentTint}"/>
+                <Setter Property="Foreground" Value="{DynamicResource cAccentDark}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
     <!-- ================= LISTS ================= -->
     <GridView x:Key="detailsView" AllowsColumnReorder="False">
       <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding Name}"/>
@@ -256,20 +328,24 @@
 
     <!-- Toolbar -->
     <DockPanel Grid.Row="0" Margin="8,6,8,4" LastChildFill="False">
-      <Button x:Name="btnBack" Content="&#x2039;" Style="{StaticResource TB}" FontSize="16" Width="34"/>
-      <Button x:Name="btnFwd" Content="&#x203A;" Style="{StaticResource TB}" FontSize="16" Width="34"/>
-      <Button x:Name="btnNew" Content="New" Style="{StaticResource TB}" Margin="14,0,0,0"/>
-      <Button x:Name="btnDelete" Content="Delete" Style="{StaticResource TB}" FontWeight="SemiBold"/>
-      <Button x:Name="btnCut" Content="Cut" Style="{StaticResource TB}"/>
-      <Button x:Name="btnCopy" Content="Copy" Style="{StaticResource TB}"/>
-      <Button x:Name="btnPaste" Content="Paste" Style="{StaticResource TB}"/>
-      <Button x:Name="btnCopyTo" Content="Copy To" Style="{StaticResource TB}"/>
-      <Button x:Name="btnMoveTo" Content="Move To" Style="{StaticResource TB}"/>
-      <RadioButton x:Name="rbDetails" Content="Details" GroupName="v" Style="{StaticResource Seg}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="22,0,0,0"/>
-      <RadioButton x:Name="rbThumbs" Content="Thumbnails" GroupName="v" Style="{StaticResource Seg}" FontSize="12" FontWeight="SemiBold" IsChecked="True" VerticalAlignment="Center" Margin="4,0,0,0"/>
-      <Button x:Name="btnHelp" Content="Help" Style="{StaticResource TB}" DockPanel.Dock="Right" Margin="8,0,0,0"/>
+      <Button x:Name="btnBack" Style="{StaticResource IconBtn}" Tag="{StaticResource icChevronLeft}" ToolTip="Back (Alt+Left)"/>
+      <Button x:Name="btnFwd" Style="{StaticResource IconBtn}" Tag="{StaticResource icChevronRight}" ToolTip="Forward (Alt+Right)"/>
+      <Border Width="1" Height="22" Background="{DynamicResource cBorder}" Margin="8,0"/>
+      <Button x:Name="btnNew" Style="{StaticResource IconBtn}" Tag="{StaticResource icFolderPlus}" ToolTip="New folder"/>
+      <Button x:Name="btnDelete" Style="{StaticResource IconBtn}" Tag="{StaticResource icTrash}" ToolTip="Delete (Del)"/>
+      <Border Width="1" Height="22" Background="{DynamicResource cBorder}" Margin="8,0"/>
+      <Button x:Name="btnCut" Style="{StaticResource IconBtn}" Tag="{StaticResource icScissors}" ToolTip="Cut (Ctrl+X)"/>
+      <Button x:Name="btnCopy" Style="{StaticResource IconBtn}" Tag="{StaticResource icCopy}" ToolTip="Copy (Ctrl+C)"/>
+      <Button x:Name="btnPaste" Style="{StaticResource IconBtn}" Tag="{StaticResource icClipboard}" ToolTip="Paste (Ctrl+V)"/>
+      <Border Width="1" Height="22" Background="{DynamicResource cBorder}" Margin="8,0"/>
+      <Button x:Name="btnCopyTo" Style="{StaticResource IconBtn}" Tag="{StaticResource icFolderDown}" ToolTip="Copy to a folder..."/>
+      <Button x:Name="btnMoveTo" Style="{StaticResource IconBtn}" Tag="{StaticResource icFolderShare}" ToolTip="Move to a folder..."/>
+      <Border Width="1" Height="22" Background="{DynamicResource cBorder}" Margin="8,0"/>
+      <RadioButton x:Name="rbDetails" GroupName="v" Style="{StaticResource SegIcon}" Tag="{StaticResource icList}" ToolTip="Details view" VerticalAlignment="Center" Margin="4,0,0,0"/>
+      <RadioButton x:Name="rbThumbs" GroupName="v" Style="{StaticResource SegIcon}" Tag="{StaticResource icGrid}" ToolTip="Thumbnails view" IsChecked="True" VerticalAlignment="Center" Margin="2,0,0,0"/>
+      <Button x:Name="btnHelp" Style="{StaticResource IconBtn}" Tag="{StaticResource icHelp}" ToolTip="Help (F1)" DockPanel.Dock="Right" Margin="8,0,0,0"/>
       <TextBox x:Name="txtSearch" DockPanel.Dock="Right" Width="180" Height="26" VerticalContentAlignment="Center"/>
-      <TextBlock Text="&#x1F50D;" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,6,0"/>
+      <Viewbox DockPanel.Dock="Right" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"><Canvas Width="24" Height="24"><Path Data="{StaticResource icSearch}" Stroke="{DynamicResource cTextDim}" StrokeThickness="2" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/></Canvas></Viewbox>
     </DockPanel>
 
     <!-- Path bar -->
