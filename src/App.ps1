@@ -1921,7 +1921,7 @@ function Set-TileResources {
         <TextBlock Text="{Binding Badge}" Foreground="White" FontWeight="Bold" FontSize="@@BF@@"
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Border>
-      <Image Source="{Binding Thumb}" Stretch="UniformToFill"/>
+      <Image Source="{Binding Thumb}" Stretch="UniformToFill"><Image.Clip><RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,@@S@@,@@S@@"/></Image.Clip></Image>
     </Grid>
     <TextBlock Text="{Binding Name}" ToolTip="{Binding FullPath}" Width="@@TW@@" TextAlignment="Center"
                TextTrimming="CharacterEllipsis" Margin="0,6,0,0" FontSize="@@FS@@" TextWrapping="Wrap" MaxHeight="@@MH@@"/>
@@ -1933,7 +1933,7 @@ function Set-TileResources {
   <Setter Property="Template">
     <Setter.Value>
       <ControlTemplate TargetType="ListViewItem">
-        <Border x:Name="bd" CornerRadius="8" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
+        <Border x:Name="bd" CornerRadius="12" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
           <ContentPresenter/>
         </Border>
         <ControlTemplate.Triggers>
@@ -5599,7 +5599,7 @@ function Set-TileResources {
         <TextBlock Text="{Binding Badge}" Foreground="White" FontWeight="Bold" FontSize="@@BF@@"
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Border>
-      <Image Source="{Binding Thumb}" Stretch="UniformToFill"/>
+      <Image Source="{Binding Thumb}" Stretch="UniformToFill"><Image.Clip><RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,@@S@@,@@S@@"/></Image.Clip></Image>
     </Grid>
     <TextBlock Text="{Binding Name}" ToolTip="{Binding FullPath}" Width="@@TW@@" TextAlignment="Center"
                TextTrimming="CharacterEllipsis" Margin="0,6,0,0" FontSize="@@FS@@" TextWrapping="Wrap" MaxHeight="@@MH@@"/>
@@ -5612,7 +5612,7 @@ function Set-TileResources {
   <Setter Property="Template">
     <Setter.Value>
       <ControlTemplate TargetType="ListViewItem">
-        <Border x:Name="bd" CornerRadius="8" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
+        <Border x:Name="bd" CornerRadius="12" Width="@@BW@@" Height="@@BH@@" Margin="1" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
           <ContentPresenter/>
         </Border>
         <ControlTemplate.Triggers>
