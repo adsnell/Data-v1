@@ -5904,6 +5904,57 @@ try {
     $win.Icon = $rtb27
 } catch { Write-Log ('icon27: ' + $_.Exception.Message) }
 # ===== END SCRIPT27 =====
+# ===== SCRIPT28-MARKER =====
+# Dark look (navy frame): only the canvas behind the cards and the status bar change colour.
+$script:themeName = 'light'
+function Get-ThemeColor([string]$hex) { return [System.Windows.Media.Color][System.Windows.Media.ColorConverter]::ConvertFromString($hex) }
+
+$script:icMoon = [System.Windows.Media.Geometry]::Parse('M21,12.8 A9,9 0 1 1 11.2,3 A7,7 0 0 0 21,12.8 Z')
+$script:icSun = [System.Windows.Media.Geometry]::Parse('M17,12 A5,5 0 1 1 7,12 A5,5 0 1 1 17,12 Z M12,1 V3 M12,21 V23 M4.2,4.2 L5.6,5.6 M18.4,18.4 L19.8,19.8 M1,12 H3 M21,12 H23 M4.2,19.8 L5.6,18.4 M18.4,5.6 L19.8,4.2')
+$script:btnTheme = New-Object System.Windows.Controls.Button
+$script:btnTheme.Style = $win.FindResource('IconBtn')
+$script:btnTheme.Tag = $script:icMoon
+$script:btnTheme.ToolTip = 'Dark look'
+$script:btnTheme.Margin = [System.Windows.Thickness]::new(4, 0, 0, 0)
+[System.Windows.Controls.DockPanel]::SetDock($script:btnTheme, [System.Windows.Controls.Dock]::Right)
+$tbDock28 = $btnHelp.Parent
+$tbDock28.Children.Insert($tbDock28.Children.IndexOf($btnHelp) + 1, $script:btnTheme)
+
+function Set-Theme([string]$name, [bool]$save) {
+    try {
+        if ($name -eq 'dark') {
+            $cv = '#0B1A30'; $sn = '#E8EDF3'; $se = '#FF8A80'; $sw = '#FFC857'; $so = '#7FD99A'
+        } else {
+            $name = 'light'
+            $cv = '#D5DADF'; $sn = '#202124'; $se = '#C62828'; $sw = '#B26A00'; $so = '#188038'
+        }
+        $win.Resources['cCanvas'] = New-Object System.Windows.Media.SolidColorBrush (Get-ThemeColor $cv)
+        $script:stBrush['norm'].Color = Get-ThemeColor $sn
+        $script:stBrush['err'].Color  = Get-ThemeColor $se
+        $script:stBrush['warn'].Color = Get-ThemeColor $sw
+        $script:stBrush['ok'].Color   = Get-ThemeColor $so
+        if (-not ($script:stBrush.Values -contains $txtStatus.Foreground)) { $txtStatus.Foreground = $script:stBrush['norm'] }
+        $script:themeName = $name
+        if ($name -eq 'dark') { $script:btnTheme.Tag = $script:icSun; $script:btnTheme.ToolTip = 'Light look' }
+        else { $script:btnTheme.Tag = $script:icMoon; $script:btnTheme.ToolTip = 'Dark look' }
+        if ($save) { Set-Setting 'Theme' $name }
+    } catch { Write-Log ('theme: ' + $_.Exception.Message) }
+}
+$script:btnTheme.Add_Click({ if ($script:themeName -eq 'dark') { Set-Theme 'light' $true } else { Set-Theme 'dark' $true } })
+
+# remember the choice (runs after the earlier Closing handlers, which rewrite settings.json)
+$win.Add_Closing({ try { Set-Setting 'Theme' $script:themeName } catch { } })
+
+# apply the saved choice at start-up
+try {
+    if ([IO.File]::Exists($settingsFile)) {
+        $st28 = Get-Content $settingsFile -Raw | ConvertFrom-Json
+        if ($st28.Theme -eq 'dark') { Set-Theme 'dark' $false }
+    }
+} catch { }
+
+$script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nLIGHT AND DARK LOOK`nThe moon icon beside the Help icon switches to a dark navy look (the panels stay light, and the status bar text turns light so it stays readable). The sun icon switches back. Data remembers your choice.`n`nPress F1 any time")
+# ===== END SCRIPT28 =====
 $win.ShowDialog() | Out-Null
 
 
