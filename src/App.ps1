@@ -2220,7 +2220,7 @@ $list.AddHandler([System.Windows.Controls.GridViewColumnHeader]::ClickEvent, [Sy
 
 # ---------- Help ----------
 $script:helpText = (@(
-'METADATAEDITOR - QUICK HELP',
+'DATA - QUICK HELP',
 '',
 'EDITING METADATA',
 'Select one or more files, edit the fields on the right, then press SAVE METADATA or Ctrl+S.',

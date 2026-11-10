@@ -8,7 +8,7 @@ $zip = Join-Path $dist 'Data-portable.zip'
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 if (Test-Path $zip) { Remove-Item $zip -Force }
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
-robocopy $root $stage /E /XD "$root\.git" "$root\cache" "$root\logs" "$root\dist" "$root\bin" "$root\icons-preview" /XF *.bak* settings.json Backup.ps1 .gitignore README.md MetadataEditor.ico Data_v1.ico /NFL /NDL /NJH /NJS /NP | Out-Null
+robocopy $root $stage /E /XD "$root\.git" "$root\cache" "$root\logs" "$root\dist" "$root\bin" "$root\tools" "$root\icons-preview" /XF *.bak* settings.json Backup.ps1 .gitignore README.md MetadataEditor.ico Data_v1.ico /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { Write-Host "Copy failed (robocopy code $LASTEXITCODE)" -ForegroundColor Red; return }
 $cfg = Get-Content (Join-Path $stage 'config.json') -Raw | ConvertFrom-Json
 $cfg.ExifToolPath = 'exiftool\exiftool.exe'
