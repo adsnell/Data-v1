@@ -5869,6 +5869,41 @@ Update-Crumbs
 
 $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nTHE PATH BAR`nThe folder you are in is shown as a path such as Pictures > 2025 > Leamington. Click any part to jump straight to that folder. Right-click it to copy the full path.`n`nPress F1 any time")
 # ===== END SCRIPT26 =====
+# ===== SCRIPT27-MARKER =====
+# ---------- Window / taskbar icon: royal blue tile, gold lettering ----------
+try {
+    $c1 = [System.Windows.Media.Color]::FromRgb(47, 95, 208)
+    $c2 = [System.Windows.Media.Color]::FromRgb(22, 54, 150)
+    $g1 = [System.Windows.Media.Color]::FromRgb(246, 211, 101)
+    $g2 = [System.Windows.Media.Color]::FromRgb(201, 151, 28)
+    function New-VGrad27($a, $b) {
+        $br = New-Object System.Windows.Media.LinearGradientBrush
+        $br.StartPoint = New-Object System.Windows.Point(0, 0)
+        $br.EndPoint = New-Object System.Windows.Point(0, 1)
+        [void]$br.GradientStops.Add((New-Object System.Windows.Media.GradientStop -ArgumentList $a, 0.0))
+        [void]$br.GradientStops.Add((New-Object System.Windows.Media.GradientStop -ArgumentList $b, 1.0))
+        return $br
+    }
+    $blue27 = New-VGrad27 $c1 $c2
+    $gold27 = New-VGrad27 $g1 $g2
+    $goldPen27 = New-Object System.Windows.Media.Pen($gold27, 1.4)
+    $dv27 = New-Object System.Windows.Media.DrawingVisual
+    $dc27 = $dv27.RenderOpen()
+    $dc27.DrawRoundedRectangle($blue27, $null, (New-Object System.Windows.Rect(2, 2, 60, 60)), 13, 13)
+    $dc27.DrawRoundedRectangle($null, $goldPen27, (New-Object System.Windows.Rect(6, 6, 52, 52)), 9, 9)
+    $face27 = New-Object System.Windows.Media.Typeface((New-Object System.Windows.Media.FontFamily('Cambria')), [System.Windows.FontStyles]::Normal, [System.Windows.FontWeights]::Bold, [System.Windows.FontStretches]::Normal)
+    $ft0 = New-Object System.Windows.Media.FormattedText('DATA', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, $face27, 20, $gold27)
+    $sz27 = 20 * 38 / $ft0.Width
+    $ft27 = New-Object System.Windows.Media.FormattedText('DATA', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, $face27, $sz27, $gold27)
+    $dc27.DrawText($ft27, (New-Object System.Windows.Point(((64 - $ft27.Width) / 2), (((64 - $ft27.Height) / 2) - 3))))
+    $dc27.DrawLine($goldPen27, (New-Object System.Windows.Point(20, 45)), (New-Object System.Windows.Point(44, 45)))
+    $dc27.Close()
+    $rtb27 = New-Object System.Windows.Media.Imaging.RenderTargetBitmap(64, 64, 96, 96, [System.Windows.Media.PixelFormats]::Pbgra32)
+    $rtb27.Render($dv27)
+    $rtb27.Freeze()
+    $win.Icon = $rtb27
+} catch { Write-Log ('icon27: ' + $_.Exception.Message) }
+# ===== END SCRIPT27 =====
 $win.ShowDialog() | Out-Null
 
 
