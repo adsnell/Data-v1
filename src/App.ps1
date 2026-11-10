@@ -5928,7 +5928,7 @@ function Set-Theme([string]$name, [bool]$save) {
             $name = 'light'
             $cv = '#D5DADF'; $sn = '#202124'; $se = '#C62828'; $sw = '#B26A00'; $so = '#188038'
         }
-        $win.Resources['cCanvas'] = New-Object System.Windows.Media.SolidColorBrush (Get-ThemeColor $cv)
+        $win.Resources['cCanvas'] = [System.Windows.Media.SolidColorBrush]::new((Get-ThemeColor $cv))
         $script:stBrush['norm'].Color = Get-ThemeColor $sn
         $script:stBrush['err'].Color  = Get-ThemeColor $se
         $script:stBrush['warn'].Color = Get-ThemeColor $sw
