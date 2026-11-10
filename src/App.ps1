@@ -5891,7 +5891,7 @@ try {
     $dc27 = $dv27.RenderOpen()
     $dc27.DrawRoundedRectangle($blue27, $null, (New-Object System.Windows.Rect(2, 2, 60, 60)), 13, 13)
     # (no inner frame)
-    $face27 = New-Object System.Windows.Media.Typeface((New-Object System.Windows.Media.FontFamily('Cambria')), [System.Windows.FontStyles]::Normal, [System.Windows.FontWeights]::Bold, [System.Windows.FontStretches]::Normal)
+    $face27 = New-Object System.Windows.Media.Typeface((New-Object System.Windows.Media.FontFamily('Segoe UI')), [System.Windows.FontStyles]::Normal, [System.Windows.FontWeights]::Bold, [System.Windows.FontStretches]::Normal)
     $ft0 = New-Object System.Windows.Media.FormattedText('DATA', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, $face27, 20, $gold27)
     $sz27 = 20 * 46 / $ft0.Width
     $ft27 = New-Object System.Windows.Media.FormattedText('DATA', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, $face27, $sz27, $gold27)
