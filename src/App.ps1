@@ -5704,6 +5704,171 @@ public static class DwmNative {
     })
 } catch { Write-Log ('dark title bar: ' + $_.Exception.Message) }
 # ===== END SCRIPT25 =====
+# ===== SCRIPT26-MARKER =====
+# ---------- 1. Every dialog window picks up the app theme ----------
+[System.Windows.EventManager]::RegisterClassHandler([System.Windows.Window], [System.Windows.FrameworkElement]::LoadedEvent, [System.Windows.RoutedEventHandler]{
+    param($s, $e)
+    try {
+        if ($s -is [System.Windows.Window] -and $s -ne $win -and $e.OriginalSource -eq $s) {
+            $d = New-Object System.Windows.ResourceDictionary
+            foreach ($k in @($win.Resources.Keys)) { try { $d.Add($k, $win.Resources[$k]) } catch { } }
+            $s.Resources.MergedDictionaries.Add($d)
+            $s.SetResourceReference([System.Windows.Controls.Control]::BackgroundProperty, 'cPanel')
+            $s.FontFamily = $win.FontFamily
+        }
+    } catch { }
+})
+
+# ---------- 2. Message boxes in the app style ----------
+function Msg($text, $buttons = 'OK', $icon = 'None') {
+    $btn = "$buttons"; $ic = "$icon"
+    $w = New-Object System.Windows.Window
+    $w.Title = 'Data'
+    $w.SizeToContent = 'WidthAndHeight'
+    $w.MinWidth = 380; $w.MaxWidth = 600
+    $w.ResizeMode = 'NoResize'
+    $w.ShowInTaskbar = $false
+    $w.WindowStartupLocation = 'CenterOwner'
+    try { $w.Owner = $win } catch { }
+    $geom = $null; $col = '#00695C'
+    switch ($ic) {
+        { $_ -in 'Information', 'Asterisk' } { $geom = 'M21,12 A9,9 0 1 1 3,12 A9,9 0 1 1 21,12 Z M12,11 V16 M12,8 H12.1' }
+        { $_ -in 'Warning', 'Exclamation' } { $geom = 'M12,4 L21,19 H3 Z M12,10 V14 M12,16.5 H12.1'; $col = '#B06000' }
+        { $_ -in 'Error', 'Stop', 'Hand' } { $geom = 'M21,12 A9,9 0 1 1 3,12 A9,9 0 1 1 21,12 Z M9,9 L15,15 M15,9 L9,15'; $col = '#D93025' }
+        'Question' { $geom = 'M21,12 A9,9 0 1 1 3,12 A9,9 0 1 1 21,12 Z M9.5,9.5 A2.5,2.5 0 1 1 12.8,11.8 C12.2,12.2 12,12.6 12,13.5 M12,17 H12.1' }
+    }
+    $outer = New-Object System.Windows.Controls.StackPanel
+    $outer.Margin = [System.Windows.Thickness]::new(24, 22, 24, 18)
+    $row = New-Object System.Windows.Controls.StackPanel
+    $row.Orientation = 'Horizontal'
+    if ($geom) {
+        $vb = New-Object System.Windows.Controls.Viewbox
+        $vb.Width = 30; $vb.Height = 30
+        $vb.VerticalAlignment = 'Top'
+        $vb.Margin = [System.Windows.Thickness]::new(0, 0, 14, 0)
+        $cv = New-Object System.Windows.Controls.Canvas
+        $cv.Width = 24; $cv.Height = 24
+        $pth = New-Object System.Windows.Shapes.Path
+        $pth.Data = [System.Windows.Media.Geometry]::Parse($geom)
+        $pth.Stroke = (New-Object System.Windows.Media.BrushConverter).ConvertFromString($col)
+        $pth.StrokeThickness = 1.9
+        $pth.StrokeLineJoin = 'Round'; $pth.StrokeStartLineCap = 'Round'; $pth.StrokeEndLineCap = 'Round'
+        [void]$cv.Children.Add($pth)
+        $vb.Child = $cv
+        [void]$row.Children.Add($vb)
+    }
+    $tb = New-Object System.Windows.Controls.TextBlock
+    $tb.Text = [string]$text
+    $tb.TextWrapping = 'Wrap'
+    $tb.MaxWidth = 460
+    $tb.FontSize = 14
+    $tb.VerticalAlignment = 'Center'
+    try { $tb.Foreground = $win.FindResource('cText') } catch { }
+    [void]$row.Children.Add($tb)
+    [void]$outer.Children.Add($row)
+
+    $names = @('OK'); $closeResult = 'OK'
+    if ($btn -eq 'OKCancel') { $names = @('OK', 'Cancel'); $closeResult = 'Cancel' }
+    elseif ($btn -eq 'YesNo') { $names = @('Yes', 'No'); $closeResult = 'No' }
+    elseif ($btn -eq 'YesNoCancel') { $names = @('Yes', 'No', 'Cancel'); $closeResult = 'Cancel' }
+    $bp = New-Object System.Windows.Controls.StackPanel
+    $bp.Orientation = 'Horizontal'
+    $bp.HorizontalAlignment = 'Right'
+    $bp.Margin = [System.Windows.Thickness]::new(0, 22, 0, 0)
+    $script:msgResult = $closeResult
+    $script:msgWin = $w
+    for ($i = 0; $i -lt $names.Count; $i++) {
+        $b = New-Object System.Windows.Controls.Button
+        $b.Content = $names[$i]; $b.Tag = $names[$i]
+        $b.Width = 92; $b.Height = 34
+        $b.Margin = [System.Windows.Thickness]::new(8, 0, 0, 0)
+        if ($i -eq 0) { try { $b.Style = $win.FindResource('SaveBtn') } catch { }; $b.IsDefault = $true }
+        else { try { $b.Style = $win.FindResource('TBSoft') } catch { } }
+        if ($names[$i] -eq $closeResult) { $b.IsCancel = $true }
+        $b.Add_Click({ param($s, $e) $script:msgResult = [string]$s.Tag; $script:msgWin.Close() })
+        [void]$bp.Children.Add($b)
+    }
+    [void]$outer.Children.Add($bp)
+    $w.Content = $outer
+    [void]$w.ShowDialog()
+    return $script:msgResult
+}
+
+# ---------- 3. Breadcrumb path: click any part to jump to that folder ----------
+$pathBar26 = $txtPath.Parent
+$txtPath.Visibility = 'Collapsed'
+foreach ($c in @($pathBar26.Children)) {
+    if ($c -is [System.Windows.Controls.TextBlock] -and $c.Text -eq 'Path:') { $c.Visibility = 'Collapsed' }
+}
+$script:crumbHoverBrush = $win.FindResource('cHover')
+$crumbPanel = New-Object System.Windows.Controls.StackPanel
+$crumbPanel.Orientation = 'Horizontal'
+$crumbScroll = New-Object System.Windows.Controls.ScrollViewer
+$crumbScroll.HorizontalScrollBarVisibility = 'Hidden'
+$crumbScroll.VerticalScrollBarVisibility = 'Disabled'
+$crumbScroll.VerticalAlignment = 'Center'
+$crumbScroll.Content = $crumbPanel
+[void]$pathBar26.Children.Add($crumbScroll)
+
+$cmCrumb = New-Object System.Windows.Controls.ContextMenu
+$miCrumb = New-Object System.Windows.Controls.MenuItem
+$miCrumb.Header = 'Copy path'
+$miCrumb.Add_Click({ try { [System.Windows.Clipboard]::SetText([string]$txtPath.Text); $txtStatus.Text = 'Path copied to the clipboard' } catch { } })
+[void]$cmCrumb.Items.Add($miCrumb)
+$crumbScroll.ContextMenu = $cmCrumb
+
+function Update-Crumbs {
+    try {
+        $crumbPanel.Children.Clear()
+        $p = [string]$txtPath.Text
+        if (-not $p) { return }
+        $rt = $null
+        try { $rt = [IO.Path]::GetPathRoot($p) } catch { }
+        $items = New-Object 'System.Collections.Generic.List[object]'
+        if ($rt -and $p.Length -ge $rt.Length) {
+            $items.Add(@{ Text = $rt.TrimEnd('\'); Path = $rt })
+            $rest = $p.Substring($rt.Length).Trim('\')
+            $acc = $rt
+            if ($rest) { foreach ($seg in ($rest -split '\\')) { $acc = Join-Path $acc $seg; $items.Add(@{ Text = $seg; Path = $acc }) } }
+        } else { $items.Add(@{ Text = $p; Path = $p }) }
+        $dim = $win.FindResource('cTextDim'); $ink = $win.FindResource('cText'); $faint = $win.FindResource('cTextFaint')
+        for ($i = 0; $i -lt $items.Count; $i++) {
+            if ($i -gt 0) {
+                $ch = New-Object System.Windows.Shapes.Path
+                $ch.Data = [System.Windows.Media.Geometry]::Parse('M9,6 L15,12 L9,18')
+                $ch.Stroke = $faint; $ch.StrokeThickness = 1.8
+                $ch.StrokeStartLineCap = 'Round'; $ch.StrokeEndLineCap = 'Round'; $ch.StrokeLineJoin = 'Round'
+                $ch.Stretch = 'Uniform'; $ch.Width = 8; $ch.Height = 11
+                $ch.Margin = [System.Windows.Thickness]::new(2, 0, 2, 0)
+                $ch.VerticalAlignment = 'Center'
+                [void]$crumbPanel.Children.Add($ch)
+            }
+            $last = ($i -eq ($items.Count - 1))
+            $bd = New-Object System.Windows.Controls.Border
+            $bd.CornerRadius = [System.Windows.CornerRadius]::new(8)
+            $bd.Padding = [System.Windows.Thickness]::new(8, 3, 8, 3)
+            $bd.Background = [System.Windows.Media.Brushes]::Transparent
+            $bd.Cursor = [System.Windows.Input.Cursors]::Hand
+            $bd.Tag = [string]$items[$i].Path
+            $bd.ToolTip = [string]$items[$i].Path
+            $t = New-Object System.Windows.Controls.TextBlock
+            $t.Text = [string]$items[$i].Text
+            $t.FontSize = 14
+            if ($last) { $t.FontWeight = [System.Windows.FontWeights]::SemiBold; $t.Foreground = $ink } else { $t.Foreground = $dim }
+            $bd.Child = $t
+            $bd.Add_MouseEnter({ param($s, $e) $s.Background = $script:crumbHoverBrush })
+            $bd.Add_MouseLeave({ param($s, $e) $s.Background = [System.Windows.Media.Brushes]::Transparent })
+            $bd.Add_MouseLeftButtonUp({ param($s, $e) try { Select-TreePath ([string]$s.Tag) } catch { } })
+            [void]$crumbPanel.Children.Add($bd)
+        }
+        [void]$crumbScroll.Dispatcher.BeginInvoke([Action]{ $crumbScroll.ScrollToRightEnd() }, [System.Windows.Threading.DispatcherPriority]::Background)
+    } catch { Write-Log ('crumbs: ' + $_.Exception.Message) }
+}
+$txtPath.Add_TextChanged({ Update-Crumbs })
+Update-Crumbs
+
+$script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nTHE PATH BAR`nThe folder you are in is shown as a path such as Pictures > 2025 > Leamington. Click any part to jump straight to that folder. Right-click it to copy the full path.`n`nPress F1 any time")
+# ===== END SCRIPT26 =====
 $win.ShowDialog() | Out-Null
 
 

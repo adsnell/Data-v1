@@ -500,6 +500,60 @@
       </Setter>
     </Style>
 
+        <!-- ================= TOOLTIPS AND MENUS ================= -->
+    <Style TargetType="ToolTip">
+      <Setter Property="Background" Value="#202124"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Padding" Value="9,5"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ToolTip">
+            <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+              <ContentPresenter/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="ContextMenu">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ContextMenu">
+            <Border Background="White" BorderBrush="{DynamicResource cBorder}" BorderThickness="1" CornerRadius="10" Padding="3,4">
+              <ItemsPresenter/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="MenuItem">
+      <Setter Property="Foreground" Value="{DynamicResource cText}"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Padding" Value="12,7"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="MenuItem">
+            <Border x:Name="bd" Background="Transparent" CornerRadius="7" Padding="{TemplateBinding Padding}" Margin="2,1" SnapsToDevicePixels="True">
+              <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource cAccentTint}"/></Trigger>
+              <Trigger Property="IsEnabled" Value="False"><Setter Property="Foreground" Value="{DynamicResource cTextFaint}"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Separator"><Border Height="1" Margin="10,4" Background="{DynamicResource cBorder}"/></ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
     <!-- ================= LISTS ================= -->
     <GridView x:Key="detailsView" AllowsColumnReorder="False">
       <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding Name}"/>
