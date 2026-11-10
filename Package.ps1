@@ -8,11 +8,15 @@ $zip = Join-Path $dist 'Data-portable.zip'
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 if (Test-Path $zip) { Remove-Item $zip -Force }
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
-robocopy $root $stage /E /XD "$root\.git" "$root\cache" "$root\logs" "$root\dist" "$root\bin" /XF *.bak* settings.json Backup.ps1 .gitignore /NFL /NDL /NJH /NJS /NP | Out-Null
+robocopy $root $stage /E /XD "$root\.git" "$root\cache" "$root\logs" "$root\dist" "$root\bin" "$root\icons-preview" /XF *.bak* settings.json Backup.ps1 .gitignore README.md MetadataEditor.ico Data_v1.ico /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { Write-Host "Copy failed (robocopy code $LASTEXITCODE)" -ForegroundColor Red; return }
 $cfg = Get-Content (Join-Path $stage 'config.json') -Raw | ConvertFrom-Json
 $cfg.ExifToolPath = 'exiftool\exiftool.exe'
 $cfg | ConvertTo-Json | Set-Content (Join-Path $stage 'config.json') -Encoding UTF8
+# TRIM1: drop ExifTool documentation (.pod) from the package only, then check ExifTool still runs
+Get-ChildItem (Join-Path $stage 'exiftool') -Recurse -Filter *.pod -File | Remove-Item -Force
+$etv = & (Join-Path $stage 'exiftool\exiftool.exe') -ver
+if (-not $etv) { Write-Host 'Packaged ExifTool failed its check - stopping' -ForegroundColor Red; return }
 Set-Content (Join-Path $stage 'READ ME FIRST.txt') -Encoding UTF8 -Value @(
     'Data - portable',
     '',
@@ -28,3 +32,5 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory($stage, $zip, [IO.Compression.CompressionLevel]::Optimal, $true)
 $mb = '{0:N1}' -f ((Get-Item $zip).Length / 1MB)
 Write-Host "Created $zip ($mb MB)" -ForegroundColor Green
+# TRIM2: remove the staging copy once the zip exists
+Remove-Item $stage -Recurse -Force
