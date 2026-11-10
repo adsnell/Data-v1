@@ -5872,10 +5872,10 @@ $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nTHE PA
 # ===== SCRIPT27-MARKER =====
 # ---------- Window / taskbar icon: royal blue tile, gold lettering ----------
 try {
-    $c1 = [System.Windows.Media.Color]::FromRgb(47, 95, 208)
-    $c2 = [System.Windows.Media.Color]::FromRgb(22, 54, 150)
-    $g1 = [System.Windows.Media.Color]::FromRgb(246, 211, 101)
-    $g2 = [System.Windows.Media.Color]::FromRgb(201, 151, 28)
+    $c1 = [System.Windows.Media.Color]::FromRgb(27, 52, 112)
+    $c2 = [System.Windows.Media.Color]::FromRgb(11, 27, 68)
+    $g1 = [System.Windows.Media.Color]::FromRgb(224, 163, 90)
+    $g2 = [System.Windows.Media.Color]::FromRgb(176, 108, 38)
     function New-VGrad27($a, $b) {
         $br = New-Object System.Windows.Media.LinearGradientBrush
         $br.StartPoint = New-Object System.Windows.Point(0, 0)
@@ -5890,13 +5890,13 @@ try {
     $dv27 = New-Object System.Windows.Media.DrawingVisual
     $dc27 = $dv27.RenderOpen()
     $dc27.DrawRoundedRectangle($blue27, $null, (New-Object System.Windows.Rect(2, 2, 60, 60)), 13, 13)
-    $dc27.DrawRoundedRectangle($null, $goldPen27, (New-Object System.Windows.Rect(6, 6, 52, 52)), 9, 9)
+    # (no inner frame)
     $face27 = New-Object System.Windows.Media.Typeface((New-Object System.Windows.Media.FontFamily('Cambria')), [System.Windows.FontStyles]::Normal, [System.Windows.FontWeights]::Bold, [System.Windows.FontStretches]::Normal)
     $ft0 = New-Object System.Windows.Media.FormattedText('DATA', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, $face27, 20, $gold27)
-    $sz27 = 20 * 38 / $ft0.Width
+    $sz27 = 20 * 46 / $ft0.Width
     $ft27 = New-Object System.Windows.Media.FormattedText('DATA', [Globalization.CultureInfo]::InvariantCulture, [System.Windows.FlowDirection]::LeftToRight, $face27, $sz27, $gold27)
-    $dc27.DrawText($ft27, (New-Object System.Windows.Point(((64 - $ft27.Width) / 2), (((64 - $ft27.Height) / 2) - 3))))
-    $dc27.DrawLine($goldPen27, (New-Object System.Windows.Point(20, 45)), (New-Object System.Windows.Point(44, 45)))
+    $dc27.DrawText($ft27, (New-Object System.Windows.Point(((64 - $ft27.Width) / 2), (((64 - $ft27.Height) / 2) - 1))))
+    # (no underline)
     $dc27.Close()
     $rtb27 = New-Object System.Windows.Media.Imaging.RenderTargetBitmap(64, 64, 96, 96, [System.Windows.Media.PixelFormats]::Pbgra32)
     $rtb27.Render($dv27)
