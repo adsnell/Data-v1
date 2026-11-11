@@ -5955,6 +5955,87 @@ try {
 
 $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nLIGHT AND DARK LOOK`nThe moon icon beside the Help icon switches to a dark navy look (the panels stay light, and the status bar text turns light so it stays readable). The sun icon switches back. Data remembers your choice.`n`nPress F1 any time")
 # ===== END SCRIPT28 =====
+# ===== SCRIPT29-MARKER =====
+# ---------- 1. Selection count at the right-hand end of the status bar ----------
+$script:txtSel = New-Object System.Windows.Controls.TextBlock
+$script:txtSel.FontSize = 14
+$script:txtSel.Margin = [System.Windows.Thickness]::new(12, 0, 0, 0)
+$script:txtSel.Foreground = $script:stBrush['norm']
+[System.Windows.Controls.DockPanel]::SetDock($script:txtSel, [System.Windows.Controls.Dock]::Right)
+$sd29 = $txtStatus.Parent
+if ($sd29 -is [System.Windows.Controls.DockPanel]) { $sd29.Children.Insert(0, $script:txtSel) }
+$list.Add_SelectionChanged({
+    try {
+        $sel29 = @($list.SelectedItems)
+        if ($sel29.Count -eq 0) { $script:txtSel.Text = ''; return }
+        $files29 = @($sel29 | Where-Object { -not $_.IsDir })
+        $t29 = '{0} selected' -f $sel29.Count
+        if ($files29.Count -gt 0) {
+            $b29 = ($files29 | Measure-Object Size -Sum).Sum
+            $t29 += '  |  ' + (Format-Size ([long]$b29))
+        }
+        $script:txtSel.Text = $t29
+    } catch { }
+})
+
+# ---------- 2. Text size menu (Aa icon beside the moon icon) ----------
+$script:icAa = [System.Windows.Media.Geometry]::Parse('M2,20 L8,4 L14,20 M4.2,14.5 H11.8 M15.5,20 L19,11 L22.5,20 M16.8,17 H21.2')
+$script:btnFont = New-Object System.Windows.Controls.Button
+$script:btnFont.Style = $win.FindResource('IconBtn')
+$script:btnFont.Tag = $script:icAa
+$script:btnFont.ToolTip = 'Text size'
+$script:btnFont.Margin = [System.Windows.Thickness]::new(4, 0, 0, 0)
+[System.Windows.Controls.DockPanel]::SetDock($script:btnFont, [System.Windows.Controls.Dock]::Right)
+$tb29 = $btnHelp.Parent
+$at29 = $tb29.Children.IndexOf($btnHelp)
+if ($script:btnTheme -and $tb29.Children.Contains($script:btnTheme)) { $at29 = $tb29.Children.IndexOf($script:btnTheme) }
+$tb29.Children.Insert($at29 + 1, $script:btnFont)
+
+function Set-TextSize([int]$new) {
+    try {
+        $new = [Math]::Max(0, [Math]::Min(8, $new))
+        $d = $new - [int]$script:fontBump
+        if ($d -eq 0) { return }
+        Bump-Fonts $win.FindName('btnBack').Parent $d
+        $tree.FontSize = $tree.FontSize + $d
+        $list.FontSize = $list.FontSize + $d
+        Bump-Fonts $txtName.Parent $d
+        $script:fontBump = $new
+        Set-Setting 'FontBump' $new
+        $txtStatus.Text = "Text size set to $new (0 to 8)."
+    } catch { Write-Log ('textsize: ' + $_.Exception.Message) }
+}
+
+$script:cmFont = New-Object System.Windows.Controls.ContextMenu
+$script:miFontInfo = New-Object System.Windows.Controls.MenuItem
+$script:miFontInfo.IsEnabled = $false
+$script:miFontUp = New-Object System.Windows.Controls.MenuItem
+$script:miFontUp.Header = 'Larger text'
+$script:miFontUp.Add_Click({ Set-TextSize ([int]$script:fontBump + 1) })
+$script:miFontDown = New-Object System.Windows.Controls.MenuItem
+$script:miFontDown.Header = 'Smaller text'
+$script:miFontDown.Add_Click({ Set-TextSize ([int]$script:fontBump - 1) })
+$script:miFontDef = New-Object System.Windows.Controls.MenuItem
+$script:miFontDef.Header = 'Default size'
+$script:miFontDef.Add_Click({ Set-TextSize 2 })
+[void]$script:cmFont.Items.Add($script:miFontInfo)
+[void]$script:cmFont.Items.Add((New-Object System.Windows.Controls.Separator))
+[void]$script:cmFont.Items.Add($script:miFontUp)
+[void]$script:cmFont.Items.Add($script:miFontDown)
+[void]$script:cmFont.Items.Add($script:miFontDef)
+$script:btnFont.ContextMenu = $script:cmFont
+$script:btnFont.Add_Click({
+    $script:miFontInfo.Header = 'Text size: ' + [int]$script:fontBump + '  (0 to 8)'
+    $script:miFontUp.IsEnabled = ([int]$script:fontBump -lt 8)
+    $script:miFontDown.IsEnabled = ([int]$script:fontBump -gt 0)
+    $script:cmFont.PlacementTarget = $script:btnFont
+    $script:cmFont.Placement = 'Bottom'
+    $script:cmFont.IsOpen = $true
+})
+$win.Add_Closing({ try { Set-Setting 'FontBump' ([int]$script:fontBump) } catch { } })
+
+$script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nTEXT SIZE AND SELECTION`nThe Aa icon beside the moon icon makes the text larger or smaller (Data remembers it). The right-hand end of the status bar shows how many items are selected and their total size.`n`nPress F1 any time")
+# ===== END SCRIPT29 =====
 $win.ShowDialog() | Out-Null
 
 
