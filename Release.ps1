@@ -48,7 +48,7 @@ Set-Location $PSScriptRoot
 $zip = Join-Path $PSScriptRoot 'dist\Data-portable.zip'
 if (-not (Test-Path $zip)) { Write-Host 'Zip was not created - stopping.' -ForegroundColor Red; return }
 $out = Join-Path $PSScriptRoot "dist\Data-$Tag-portable.zip"
-Copy-Item $zip $out -Force
+Move-Item $zip $out -Force
 $sha = (Get-FileHash $out -Algorithm SHA256).Hash
 
 if ($localTag) { git.exe tag -d $Tag }
