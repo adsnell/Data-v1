@@ -6036,6 +6036,113 @@ $win.Add_Closing({ try { Set-Setting 'FontBump' ([int]$script:fontBump) } catch 
 
 $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nTEXT SIZE AND SELECTION`nThe Aa icon beside the moon icon makes the text larger or smaller (Data remembers it). The right-hand end of the status bar shows how many items are selected and their total size.`n`nPress F1 any time")
 # ===== END SCRIPT29 =====
+# ===== SCRIPT30-MARKER =====
+# ---------- Quick tags: clickable shortcuts that add a tag to the selected files ----------
+$script:quickTags = New-Object 'System.Collections.Generic.List[string]'
+$script:quickOn = $false
+try {
+    if ([IO.File]::Exists($settingsFile)) {
+        $st30 = Get-Content $settingsFile -Raw | ConvertFrom-Json
+        if ($st30 -and $st30.TagShortcuts) {
+            foreach ($x30 in @($st30.TagShortcuts)) {
+                $s30 = ([string]$x30).Trim()
+                if ($s30 -and -not $script:quickTags.Contains($s30) -and $script:quickTags.Count -lt 24) { $script:quickTags.Add($s30) }
+            }
+        }
+    }
+} catch { }
+
+$script:quickBox = New-Object System.Windows.Controls.StackPanel
+$qHead = New-Object System.Windows.Controls.DockPanel
+$qHead.Margin = [System.Windows.Thickness]::new(0, 8, 0, 0)
+$qLbl = New-Object System.Windows.Controls.TextBlock
+$qLbl.Text = 'Quick tags:'
+$qLbl.Style = $win.FindResource('Lbl')
+$qLbl.VerticalAlignment = 'Center'
+$btnQuickEdit = New-Object System.Windows.Controls.Button
+$btnQuickEdit.Content = 'Edit list...'
+$btnQuickEdit.Style = $win.FindResource('TBSoft')
+$btnQuickEdit.FontSize = $btnTagAdd.FontSize
+$btnQuickEdit.ToolTip = 'Choose which tags appear here'
+[System.Windows.Controls.DockPanel]::SetDock($btnQuickEdit, [System.Windows.Controls.Dock]::Right)
+[void]$qHead.Children.Add($btnQuickEdit)
+[void]$qHead.Children.Add($qLbl)
+$script:quickWrap = New-Object System.Windows.Controls.WrapPanel
+[void]$script:quickBox.Children.Add($qHead)
+[void]$script:quickBox.Children.Add($script:quickWrap)
+$tagRow30 = $btnTagAdd.Parent
+$pane30 = $tagRow30.Parent
+$pane30.Children.Insert($pane30.Children.IndexOf($tagRow30) + 1, $script:quickBox)
+
+function Add-QuickTag([string]$tag, [string]$mode) {
+    $sel = @(Get-SelXmp)
+    if ($sel.Count -eq 0) { $txtStatus.Text = 'Select one or more files first.'; return }
+    $op = if ($mode -eq 'remove') { '-=' } else { '+=' }
+    $ch = @('-XMP-dc:Subject' + $op + $tag)
+    $label = if ($mode -eq 'remove') { "Removed tag(s) $tag from" } else { "Added tag(s) $tag to" }
+    Invoke-XmpWrite $sel $ch $label
+}
+
+function Update-QuickTags {
+    try {
+        $script:quickWrap.Children.Clear()
+        foreach ($t in $script:quickTags) {
+            $b = New-Object System.Windows.Controls.Button
+            $tbq = New-Object System.Windows.Controls.TextBlock
+            $tbq.Text = $t
+            $tbq.TextTrimming = 'CharacterEllipsis'
+            $b.Content = $tbq
+            $b.Tag = $t
+            $b.Style = $win.FindResource('TBSoft')
+            $b.FontSize = $btnTagAdd.FontSize
+            $b.Margin = [System.Windows.Thickness]::new(0, 6, 6, 0)
+            $b.MaxWidth = 220
+            $b.IsEnabled = $script:quickOn
+            $b.ToolTip = "Add '$t' to the selected files (right-click to remove it)"
+            $b.Add_Click({ param($s, $e) Add-QuickTag ([string]$s.Tag) 'add' })
+            $cmq = New-Object System.Windows.Controls.ContextMenu
+            $miq = New-Object System.Windows.Controls.MenuItem
+            $miq.Header = ("Remove '" + $t + "' from the selected files").Replace('_', '__')
+            $miq.Tag = $t
+            $miq.Add_Click({ param($s, $e) Add-QuickTag ([string]$s.Tag) 'remove' })
+            [void]$cmq.Items.Add($miq)
+            $b.ContextMenu = $cmq
+            [void]$script:quickWrap.Children.Add($b)
+        }
+    } catch { Write-Log ('quicktags: ' + $_.Exception.Message) }
+}
+
+function Do-QuickEdit {
+    $cur = ($script:quickTags -join ', ')
+    $v = Read-Input 'Quick tags' 'Your quick tags, separated by commas (up to 24). Clear the box to remove them all:' $cur
+    if ($null -eq $v) { return }
+    $new = New-Object 'System.Collections.Generic.List[string]'
+    foreach ($x in ([string]$v -split '\s*[,;]\s*')) {
+        $s = $x.Trim()
+        if ($s -and -not $new.Contains($s) -and $new.Count -lt 24) { $new.Add($s) }
+    }
+    $script:quickTags = $new
+    Update-QuickTags
+    Set-Setting 'TagShortcuts' ([string[]]$new.ToArray())
+    $txtStatus.Text = "Quick tags updated ($($new.Count))."
+}
+$btnQuickEdit.Add_Click({ Do-QuickEdit })
+
+# keep the quick tags enabled only when files that can hold XMP are selected
+$script:prevUpdateActionButtons30 = ${function:Update-ActionButtons}
+function Update-ActionButtons {
+    & $script:prevUpdateActionButtons30
+    try {
+        $script:quickOn = [bool]$btnTagAdd.IsEnabled
+        foreach ($c in $script:quickWrap.Children) { $c.IsEnabled = $script:quickOn }
+    } catch { }
+}
+
+$win.Add_Closing({ try { Set-Setting 'TagShortcuts' ([string[]]$script:quickTags.ToArray()) } catch { } })
+Update-QuickTags
+
+$script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nQUICK TAGS`nUnder the Add tags buttons, click a quick tag to add it to the selected files. Right-click one to remove it from them. Edit list... changes which tags are shown (separate them with commas).`n`nPress F1 any time")
+# ===== END SCRIPT30 =====
 $win.ShowDialog() | Out-Null
 
 
