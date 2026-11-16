@@ -6181,6 +6181,39 @@ function Read-Input($title, $prompt, $default) {
     return $null
 }
 # ===== END SCRIPT31 =====
+# ===== SCRIPT32-MARKER =====
+# Delete keeps the current search (box text, filter chips, Subfolders / Folder list results).
+function Refresh-KeepSearch {
+    $txt = $txtSearch.Text
+    $chipList = @($script:chips)
+    $deep = $script:deepActive
+    if (-not ($txt -or $chipList.Count -gt 0 -or $deep)) { Refresh-All; return }
+    if ($deep) { $script:metaReady = $false; $searchTimer.Stop(); Apply-Search; return }
+    Refresh-All
+    foreach ($c in $chipList) { Add-Chip $c }
+    if ($txt) { $txtSearch.Text = $txt }
+    $searchTimer.Stop()
+    Apply-Search
+}
+function Do-Delete {
+    $sel = @($list.SelectedItems)
+    if ($sel.Count -eq 0) { return }
+    $q = if ($sel.Count -eq 1) { "Move '$($sel[0].Name)' to the Recycle Bin?" } else { "Move $($sel.Count) items to the Recycle Bin?" }
+    if ((Msg $q 'YesNo' 'Question') -ne 'Yes') { return }
+    Stop-Thumbs
+    $errors = @(); $done = 0
+    foreach ($it in $sel) {
+        try {
+            if ($it.IsDir) { [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteDirectory($it.FullPath, 'OnlyErrorDialogs', 'SendToRecycleBin') }
+            else { [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($it.FullPath, 'OnlyErrorDialogs', 'SendToRecycleBin') }
+            $done++
+        } catch { $errors += "$($it.Name): $($_.Exception.Message)" }
+    }
+    Refresh-KeepSearch
+    $txtStatus.Text = "Deleted $done item(s)"
+    if ($errors.Count -gt 0) { [void](Msg ("Some items could not be deleted:`n`n" + ($errors -join "`n")) 'OK' 'Warning') }
+}
+# ===== END SCRIPT32 =====
 $win.ShowDialog() | Out-Null
 
 
