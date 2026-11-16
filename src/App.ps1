@@ -640,7 +640,7 @@ function Read-Input($title, $prompt, $default) {
     $tb = New-Object System.Windows.Controls.TextBlock
     $tb.Text = $prompt; $tb.Margin = [System.Windows.Thickness]::new(0, 0, 0, 6)
     $box = New-Object System.Windows.Controls.TextBox
-    $box.Text = $default; $box.Height = 28; $box.VerticalContentAlignment = 'Center'
+    $box.Text = $default; $box.Style = $win.FindResource('Fld'); $box.FontSize = 14
     $row = New-Object System.Windows.Controls.StackPanel
     $row.Orientation = 'Horizontal'; $row.HorizontalAlignment = 'Right'; $row.Margin = [System.Windows.Thickness]::new(0, 12, 0, 0)
     $ok = New-Object System.Windows.Controls.Button
@@ -6155,7 +6155,7 @@ function Measure-TextWidth([string]$text, [double]$size) {
 function Read-Input($title, $prompt, $default) {
     $w = New-Object System.Windows.Window
     $w.Title = $title; $w.SizeToContent = 'Height'
-    $need = (Measure-TextWidth ([string]$default) ([System.Windows.SystemFonts]::MessageFontSize)) + 70
+    $need = (Measure-TextWidth ([string]$default) 14) + 70
     $maxW = [System.Windows.SystemParameters]::WorkArea.Width * 0.9
     $w.Width = [Math]::Max(380, [Math]::Min($need, $maxW))
     $w.WindowStartupLocation = 'CenterOwner'; $w.Owner = $win; $w.ResizeMode = 'NoResize'
@@ -6164,7 +6164,7 @@ function Read-Input($title, $prompt, $default) {
     $tb = New-Object System.Windows.Controls.TextBlock
     $tb.Text = $prompt; $tb.TextWrapping = 'Wrap'; $tb.Margin = [System.Windows.Thickness]::new(0, 0, 0, 6)
     $box = New-Object System.Windows.Controls.TextBox
-    $box.Text = $default; $box.Height = 28; $box.VerticalContentAlignment = 'Center'
+    $box.Text = $default; $box.Style = $win.FindResource('Fld'); $box.FontSize = 14
     $row = New-Object System.Windows.Controls.StackPanel
     $row.Orientation = 'Horizontal'; $row.HorizontalAlignment = 'Right'; $row.Margin = [System.Windows.Thickness]::new(0, 12, 0, 0)
     $ok = New-Object System.Windows.Controls.Button
