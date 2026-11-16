@@ -50,9 +50,10 @@ foreach ($f in 'src\App.ps1', 'Package.ps1', 'Release.ps1', 'Backup.ps1') {
 }
 try { [xml]$xx = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'src\MainWindow.xaml')); Ok 'MainWindow.xaml is valid' } catch { Bad 'MainWindow.xaml is not valid XML'; $broken = $true }
 if ($broken) { Bad 'Fix the errors above first - nothing was committed.'; return }
-$old = @(git.exe grep -i -I -l metadataeditor -- . ':!exiftool')
-if ($old.Count -gt 0) { Warn ('Old name "MetadataEditor" still appears in: ' + ($old -join ', ')); $todo.Add('Remove the old name from: ' + ($old -join ', ')) }
-else { Ok 'No "MetadataEditor" left in tracked files' }
+$oldName = 'Metadata' + 'Editor'
+$old = @(git.exe grep -i -I -l $oldName -- . ':!exiftool')
+if ($old.Count -gt 0) { Warn ("Old name '$oldName' still appears in: " + ($old -join ', ')); $todo.Add('Remove the old name from: ' + ($old -join ', ')) }
+else { Ok 'Old app name not found in tracked files' }
 
 # ---------- 2. Manual ----------
 Step 'Manual'
