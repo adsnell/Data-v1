@@ -6143,6 +6143,44 @@ Update-QuickTags
 
 $script:helpText = $script:helpText.Replace("`n`nPress F1 any time", "`n`nQUICK TAGS`nUnder the Add tags buttons, click a quick tag to add it to the selected files. Right-click one to remove it from them. Edit list... changes which tags are shown (separate them with commas).`n`nPress F1 any time")
 # ===== END SCRIPT30 =====
+# ===== SCRIPT31-MARKER =====
+# Input boxes (Rename, Add tags, Quick tags, ...) widen to fit their text, and long prompts wrap.
+function Measure-TextWidth([string]$text, [double]$size) {
+    try {
+        $face = New-Object System.Windows.Media.Typeface($win.FontFamily, [System.Windows.FontStyles]::Normal, [System.Windows.FontWeights]::Normal, [System.Windows.FontStretches]::Normal)
+        $ft = New-Object System.Windows.Media.FormattedText($text, [System.Globalization.CultureInfo]::CurrentCulture, [System.Windows.FlowDirection]::LeftToRight, $face, $size, [System.Windows.Media.Brushes]::Black)
+        return [double]$ft.WidthIncludingTrailingWhitespace
+    } catch { return 0 }
+}
+function Read-Input($title, $prompt, $default) {
+    $w = New-Object System.Windows.Window
+    $w.Title = $title; $w.SizeToContent = 'Height'
+    $need = (Measure-TextWidth ([string]$default) ([System.Windows.SystemFonts]::MessageFontSize)) + 70
+    $maxW = [System.Windows.SystemParameters]::WorkArea.Width * 0.9
+    $w.Width = [Math]::Max(380, [Math]::Min($need, $maxW))
+    $w.WindowStartupLocation = 'CenterOwner'; $w.Owner = $win; $w.ResizeMode = 'NoResize'
+    $sp = New-Object System.Windows.Controls.StackPanel
+    $sp.Margin = [System.Windows.Thickness]::new(14)
+    $tb = New-Object System.Windows.Controls.TextBlock
+    $tb.Text = $prompt; $tb.TextWrapping = 'Wrap'; $tb.Margin = [System.Windows.Thickness]::new(0, 0, 0, 6)
+    $box = New-Object System.Windows.Controls.TextBox
+    $box.Text = $default; $box.Height = 28; $box.VerticalContentAlignment = 'Center'
+    $row = New-Object System.Windows.Controls.StackPanel
+    $row.Orientation = 'Horizontal'; $row.HorizontalAlignment = 'Right'; $row.Margin = [System.Windows.Thickness]::new(0, 12, 0, 0)
+    $ok = New-Object System.Windows.Controls.Button
+    $ok.Content = 'OK'; $ok.Width = 80; $ok.IsDefault = $true; $ok.Margin = [System.Windows.Thickness]::new(0, 0, 8, 0)
+    $cn = New-Object System.Windows.Controls.Button
+    $cn.Content = 'Cancel'; $cn.Width = 80; $cn.IsCancel = $true
+    $row.Children.Add($ok) | Out-Null; $row.Children.Add($cn) | Out-Null
+    $sp.Children.Add($tb) | Out-Null; $sp.Children.Add($box) | Out-Null; $sp.Children.Add($row) | Out-Null
+    $w.Content = $sp
+    $res = @{ v = $null }
+    $ok.Add_Click({ $res.v = $box.Text; $w.DialogResult = $true }.GetNewClosure())
+    $w.Add_Loaded({ $box.Focus() | Out-Null; $box.SelectAll() }.GetNewClosure())
+    if ($w.ShowDialog()) { return $res.v }
+    return $null
+}
+# ===== END SCRIPT31 =====
 $win.ShowDialog() | Out-Null
 
 
